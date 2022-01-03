@@ -8,6 +8,18 @@
     margin-right: 5px;
 }
 
+#searchSeqContainer {
+    width: calc(100% - 300px);
+    height: 5rem;
+    left: 40px;
+    top: 3rem;
+    position: absolute;
+    text-align: center;
+    font-family: "Times New Roman", serif;
+    font-size: 5rem;
+    z-index: -1;
+}
+
 svg {
     overflow: visible;
     margin-top: 8px;
@@ -23,10 +35,6 @@ svg {
     fill: #fff;
     stroke: #727272;
     stroke-width: 1px;
-}
-
-.node.disabled rect.outerbox {
-    /*stroke: #999;*/
 }
 
 .node rect.histbar {
