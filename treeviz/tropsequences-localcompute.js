@@ -62,9 +62,7 @@ var linkline = function (d) {
 var probformat = d3.format(".1%");
 var countformat = d3.format(",");
 
-// d3.json("sequencetree-d3format.json", function(root) {
 var tropnames = d3.map([{ "char": "\u0597", "name": "revii", "heb": "רְבִיעִ֗י" }, { "char": "\u059d", "name": "gereshmukdam" }, { "char": "\u05a6", "name": "merkhakfula", "heb": "מֵרְכָא־כְפוּלָ֦ה" }, { "char": "\u059e", "name": "gershayim", "heb": "גֵּרְשַׁ֞יִם" }, { "char": "\u059b", "name": "tevir", "heb": "תְּבִ֛יר" }, { "char": "\u059f", "name": "karnepara", "heb": "קַרְנֵי פָרָ֟ה" }, { "char": "\u0595", "name": "gadol", "heb": "גָּד֕וֹל" }, { "char": "\u05a0", "name": "telishagedola", "heb": "תְּ֠לִישָא גְדוֹלָה" }, { "char": "\u0599", "name": "pashta", "heb": "פַּשְׁטָא֙" }, { "char": "\u0593", "name": "shalshelet", "heb": "שַׁלְשֶׁ֓לֶת" }, { "char": "\u0596", "name": "tipkha", "heb": "טִפְּחָ֖א" }, { "char": "\u059a", "name": "yetiv", "heb": "יְ֚תִיב" }, { "char": "\u0592", "name": "segol", "heb": "סֶגוֹל֒" }, { "char": "\u05aa", "name": "yerakhbenyomo", "heb": "יֵרֶח בֶּן יוֹמ֪וֹ" }, { "char": "\u05ae", "name": "zarka", "heb": "זַרְקָא֮" }, { "char": "\u05a3", "name": "munakh", "heb": "מֻנַּ֣ח" }, { "char": "\u05a5", "name": "merkha", "heb": "מֵרְכָ֥א" }, { "char": "\u05a8", "name": "kadma", "heb": "קַדְמָ֨א" }, { "char": "\u0591", "name": "etnakhta", "heb": "אֶתְנַחְתָּ֑א" }, { "char": "\u05c3", "name": "sofpasuk", "heb": "סוֹף פָּסוּק׃" }, { "char": "\u0598", "name": "tsinnorit", "heb": "צִנּוֹרִת֘" }, { "char": "\u059c", "name": "geresh", "heb": "גֵּ֜רֵשׁ" }, { "char": "\u05a9", "name": "telishaketana", "heb": "תְּלִישָא קְטַנָּה֩" }, { "char": "\u05a7", "name": "darga", "heb": "דַּרְגָּ֧א" }, { "char": "\u05a1", "name": "pazer", "heb": "פָּזֵ֡ר" }, { "char": "\u05a4", "name": "mapakh", "heb": "מַהְפַּ֤ך" }, { "char": "\u0594", "name": "katan", "heb": "קָטָ֔ן" }], function (t) { return t.name; });
-// var treePreD3 = [];
 
 var tropstrings;
 var disaggregated;
@@ -102,12 +100,14 @@ function init(root) {
         d.x = x(d.depth * (hspace + tree.nodeSize()[0])) - tree.nodeSize()[0];
         d.y = i * (vspace + tree.nodeSize()[1]); // - d.depth*(vspace + tree.nodeSize()[1]);
 
-        d.prob = d.count / depthsum;
+        d.prob = d.count / depthsum || 0;
     });
     links = tree.links(nodes);
 
     update();
     initgraph();
+    $("#clearButton").click(clearClick);
+    $("#backspaceButton").click(backspaceClick);
 }
 
 var pos = function (d, i) {
@@ -211,72 +211,47 @@ function ancestry(n, s) {
     else return s;
 }
 
+let searchSeq = [];
 var ancestrynames = [];
+
 function nodeclick(d) {
     ancestrynames = ancestry(d).split(",").reverse(); // the ancestry string is backwards, so I have to do this silly thing.
-    var ancestorstring;
-    var collapsingroot = false;
 
+    searchSeq.push(d);
+    applySearchSeq();
+}
 
-    // var maxclickeddepth = d3.max(nodes.filter(function(d) { return d.clicked }).map(function(d) { return d.depth }));
-    nodes = nodes.filter(function (n) {
-        if (n.depth > d.depth) {
-            collapse(n);
-        }
-        return n.depth <= d.depth;
+function clearClick() {
+    searchSeq = [];
+    applySearchSeq();
+}
+function backspaceClick() {
+    searchSeq = searchSeq.slice(0, -1);
+    applySearchSeq();
+}
+
+function applySearchSeq() {
+    const searchString = searchSeq.map((trop) => trop.char).join("");
+    const searchText = searchSeq.map((trop) => trop.heb).join(" ");
+
+    $("#searchSeqContainer").text(searchText);
+
+    nodes.forEach((node) => {
+        var exp = RegExp(frombeginningprefix() + searchString + node.char, "g");
+
+        node.count = d3.sum(tropstrings
+            .filter((p) => p.trop.search(exp) > -1)
+            .map((p) => p.trop.match(exp).length));
+        node.disabled = !node.count;
     });
-
-    // console.log(maxclickeddepth, d.depth);
-    var maxdepth = d3.max(nodes.map(function (d) { return d.depth; }));
-    if (d.depth == 0 && d.clicked && maxdepth == 0) {
-        // TODO: gah what should the right behavior be here?
-        // if(d.children) {
-        nodes.forEach(function (n) {
-            if (n.depth == d.depth) {
-                n.clicked = false;
-                n.disabled = false;
-            }
-        });
-        d.clicked = false;
-        d.disabled = false;
-        collapse(d);
-        collapsingroot = true;
-    }
-    else {
-        ancestorstring = ancestrynames.map(function (a) { return tropnames.get(a).char; }).join("");
-        if (d.children == undefined) { // it's never been calculated. I think this will always be true because collapse() now deletes children.
-            var newchildren = [];
-
-            // console.log(ancestrynames);
-            tropnames.forEach(function (t) {
-                var child = { "name": tropnames.get(t).name, "char": tropnames.get(t).char, "heb": tropnames.get(t).heb };
-                var exp = RegExp(frombeginningprefix() + ancestorstring + child.char, "g");
-                // console.log(child);
-
-                // this line can do it in one line, but moving it out to a loop so we can also do sources for the graph at the same time
-                child.count = d3.sum(tropstrings.filter(function (p) { return p.trop.search(exp) > -1; }).map(function (p) { return p.trop.match(exp).length; }));
-                // child.count = 0;
-
-
-                child.depth = d.depth + 1;
-                child.parent = d;
-                // console.log(exp);
-                // console.log(child);
-                if (child.count > 0) newchildren.push(child);
-            });
-
-            // treePreD3.find(function() { return d }).children = children;
-            var children = tree.nodes(newchildren); //.reverse();
-            // console.log(children);
-            // d.children = tree.nodes(children);
-            d.children = children[0].sort(function (a, b) { return b.count - a.count; });
-            // console.log(d);
-        }
-    }
+    const totalCount = d3.sum(nodes.map((node) => node.count));
+    nodes.forEach((node) => {
+        node.prob = node.count / totalCount;
+    });
 
     // do graph location data
     disaggregated = [];
-    var exp = RegExp(frombeginningprefix() + ancestorstring, "g");
+    var exp = RegExp(frombeginningprefix() + searchString, "g");
     tropstrings.forEach(function (p) {
         var pasukobj = new Object();
         pasukobj.sefer = p.sefer;
@@ -289,74 +264,9 @@ function nodeclick(d) {
 
         disaggregated.push(pasukobj);
     });
-    const withMatches = disaggregated.filter((p) => p.count);
-    console.log(withMatches);
-    // width = (d.depth + 1) * (tree.nodeSize()[0] + hspace) + tree.nodeSize()[0];
-    // width = (d3.max(nodes.map(function(d) { return d.depth })) + 2) * (tree.nodeSize()[0] + hspace);
 
-    if (d.children) { // this is the more general way of asking whether it's not a sof pasuk
-        width = (d3.max(nodes.map(function (d) { return d.depth; })) + 2) * (tree.nodeSize()[0] + hspace);
-        x.domain([0, width]);
-        x.range([width, 0]);
-        svg.attr("width", width);
-
-        nodes.forEach(function (n) {
-            // n.x += tree.nodeSize()[0] + hspace;
-            n.x = x(n.depth * (hspace + tree.nodeSize()[0])) - tree.nodeSize()[0];
-            n.prevy = n.y;
-
-
-            if (!n.clicked) n.disabled = true;
-
-            if (n.depth == d.depth && n != d) {
-                n.clicked = false;
-                n.disabled = true;
-                collapse(n);
-                // links = links.filter(function(l) { return l.source != n});
-                // width 
-            }
-        });
-
-        d.disabled = false;
-        d.clicked = true;
-        var depthsum = d3.sum(d.children.map(function (n) { return n.count; }));
-
-        d.children.forEach(function (d, i) {
-            d.x = x(d.depth * (hspace + tree.nodeSize()[0])) - tree.nodeSize()[0];
-            // d.prevy = d.y;
-            d.y = i * (vspace + tree.nodeSize()[1]);
-
-            d.disabled = false;
-            d.clicked = false;
-
-            d.prob = d.count / depthsum;
-        });
-        nodes = nodes.concat(d.children);
-    }
-    else if (!collapsingroot) {
-        d.clicked = true;
-        d.disabled = false;
-
-        nodes.forEach(function (n) {
-            if (n.depth == d.depth && n != d) {
-                n.clicked = false;
-                n.disabled = true;
-                collapse(n);
-            }
-
-            if (n.depth > d.depth) {
-                collapse(n);
-            }
-        });
-    }
     links = tree.links(nodes);
     update();
-
-    if (d.children != null) {
-        if (d.children.length == 1) {
-            nodeclick(d.children[0]);
-        }
-    }
     graph();
 }
 
@@ -430,7 +340,6 @@ function graph() {
 
 var perekindex;
 function initgraph() {
-    // var perekindex = ["bereshit,1","bereshit,2","bereshit,3","bereshit,4","bereshit,5","bereshit,6","bereshit,7","bereshit,8","bereshit,9","bereshit,10","bereshit,11","bereshit,12","bereshit,13","bereshit,14","bereshit,15","bereshit,16","bereshit,17","bereshit,18","bereshit,19","bereshit,20","bereshit,21","bereshit,22","bereshit,23","bereshit,24","bereshit,25","bereshit,26","bereshit,27","bereshit,28","bereshit,29","bereshit,30","bereshit,31","bereshit,32","bereshit,33","bereshit,34","bereshit,35","bereshit,36","bereshit,37","bereshit,38","bereshit,39","bereshit,40","bereshit,41","bereshit,42","bereshit,43","bereshit,44","bereshit,45","bereshit,46","bereshit,47","bereshit,48","bereshit,49","bereshit,50","shmot,1","shmot,2","shmot,3","shmot,4","shmot,5","shmot,6","shmot,7","shmot,8","shmot,9","shmot,10","shmot,11","shmot,12","shmot,13","shmot,14","shmot,15","shmot,16","shmot,17","shmot,18","shmot,19","shmot,20","shmot,21","shmot,22","shmot,23","shmot,24","shmot,25","shmot,26","shmot,27","shmot,28","shmot,29","shmot,30","shmot,31","shmot,32","shmot,33","shmot,34","shmot,35","shmot,36","shmot,37","shmot,38","shmot,39","shmot,40","vayikra,1","vayikra,2","vayikra,3","vayikra,4","vayikra,5","vayikra,6","vayikra,7","vayikra,8","vayikra,9","vayikra,10","vayikra,11","vayikra,12","vayikra,13","vayikra,14","vayikra,15","vayikra,16","vayikra,17","vayikra,18","vayikra,19","vayikra,20","vayikra,21","vayikra,22","vayikra,23","vayikra,24","vayikra,25","vayikra,26","vayikra,27","bmidbar,1","bmidbar,2","bmidbar,3","bmidbar,4","bmidbar,5","bmidbar,6","bmidbar,7","bmidbar,8","bmidbar,9","bmidbar,10","bmidbar,11","bmidbar,12","bmidbar,13","bmidbar,14","bmidbar,15","bmidbar,16","bmidbar,17","bmidbar,18","bmidbar,19","bmidbar,20","bmidbar,21","bmidbar,22","bmidbar,23","bmidbar,24","bmidbar,25","bmidbar,26","bmidbar,27","bmidbar,28","bmidbar,29","bmidbar,30","bmidbar,31","bmidbar,32","bmidbar,33","bmidbar,34","bmidbar,35","bmidbar,36","dvarim,1","dvarim,2","dvarim,3","dvarim,4","dvarim,5","dvarim,6","dvarim,7","dvarim,8","dvarim,9","dvarim,10","dvarim,11","dvarim,12","dvarim,13","dvarim,14","dvarim,15","dvarim,16","dvarim,17","dvarim,18","dvarim,19","dvarim,20","dvarim,21","dvarim,22","dvarim,23","dvarim,24","dvarim,25","dvarim,26","dvarim,27","dvarim,28","dvarim,29","dvarim,30","dvarim,31","dvarim,32","dvarim,33","dvarim,34"];
     perekindex = d3.set(tropstrings.map(function (p) { return p.sefer + "," + p.perek; })).values();
     perekindex.sort(sortperekindex);
 
