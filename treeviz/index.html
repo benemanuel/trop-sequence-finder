@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quantified Cantillation &ndash; Trop Sequence Explorer</title>
+    <title>Trop Sequence Finder</title>
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
@@ -15,15 +15,11 @@
     <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js.cookie.js"></script>
 
-    <meta property="og:url" content="http://quantifiedcantillation.nl/" />
+    <!-- <meta property="og:url" content="http://quantifiedcantillation.nl/" /> -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Quantified Cantillation – Trop Sequence Explorer" />
+    <meta property="og:title" content="Trop Sequence Finder" />
     <meta property="og:description"
         content="Explore trop sequences in the Torah with conditional transition probabilities." />
-    <meta property="og:image" content="http://quantifiedcantillation.nl/fbpreview.png?v2" />
-    <meta property="og:image:width" content="2154" />
-    <meta property="og:image:height" content="1280" />
-
 </head>
 
 <body dir="rtl">
@@ -35,7 +31,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="prefsLabel">Quantified Cantillation</h4>
+                    <h4 class="modal-title" id="prefsLabel">Trop Sequence Finder</h4>
                 </div>
                 <div class="modal-body">
                     <ul class="nav nav-tabs" role="tablist">
@@ -48,11 +44,15 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="about">
                             <h5>What</h5>
-                            <p>Ever wondered whether there were more instances of <span class="trop">זַרְקָא֮
-                                    סְגוֹל֒</span> or <span class="trop">זַרְקָא֮ מֻנַּ֣ח סְגוֹל֒</span>? Of course you
-                                have.</p>
-                            <p>From any <em>trop</em>, click to find out what <em>trop</em> can come next, and what the
-                                transition probability is.</p>
+                            <p>
+                                A pedagogical tool for constructing <em>trop</em> sequences and finding matching
+                                occurences throughout <em>chumash</em>.
+                            </p>
+                            <p>
+                                Construct sequences by selecting <em>trop</em> on the right. The current sequence will
+                                appear in the middle and the boxes will update with the occurrence data of the current
+                                sequence followed by the respective <em>trop</em>.
+                            </p>
                             <p id="explanation"><img src="explanation.png"></p>
 
                             <p>A bar graph at the bottom shows where the current <em>trop</em> sequence occurs in the
@@ -62,28 +62,15 @@
                             <p>You can show settings and get to this message any time by clicking the <span
                                     class="glyphicon glyphicon-cog"></span> in the lower left.</p>
 
-                            <p>For more information, see <a
-                                    href="https://noahliebman.net/2015/12/quantified-cantillation-iii-trop-sequence-explorer/">this
-                                    blog post</a>.</p>
-
-                            <p>Note: this is not an Internet Explorer&ndash;friendly site.</p>
-
-                            <h5>Why</h5>
-                            <p>Why not? As far as I know, this has no scholarly value, but it seemed like an interesting
-                                thing to do.</p>
-                            <p>It grew out of a previous couple of <a
-                                    href="https://noahliebman.net/2015/04/quantified-cantillation/">blog</a> <a
-                                    href="https://noahliebman.net/2015/04/quantified-cantillation-ii-word-counts/">posts</a>,
-                                which were similarly inspired by sheer curiosity.</p>
-
-                            <h5>Who</h5>
-                            <p>I’m <a href="https://noahliebman.net/">Noah Liebman</a>. I also made <a
-                                    href="https://isyontefearlythisyear.com/">isyontefearlythisyear.com</a>. You can
-                                tweet me at <a href="https://twitter.com/noleli">@Noleli</a>, or <a
-                                    href="http://scr.im/noleli">email me</a>.</p>
-
                             <h5>Credits</h5>
-                            <p><em>Trop</em> data is extracted from <a href="http://tanach.us/">Tanach.us</a>.
+                            <p>
+                                This site is just a slightly modified version of <a
+                                    href="https://quantifiedcantillation.nl/">Quantified Cantillation</a> by <a
+                                    href="https://noahliebman.net/">Noah Liebman</a>.
+                                He did all the hard work and I slightly modified it to better suit my use case.
+                            </p>
+                            <p>
+                                <em>Trop</em> data is extracted from <a href="http://tanach.us/">Tanach.us</a>.
                                 <em>Pasuk</em> text is from <a href="http://www.sefaria.org/">Sefaria</a>. Built with <a
                                     href="http://d3js.org/">D3</a>.
                             </p>
@@ -231,8 +218,10 @@
 
 
     <div id="searchSeqContainer"></div>
-    <button id="clearButton">Clear</button>
-    <button id="backspaceButton">Backspace</button>
+    <div id="buttonContainer">
+        <button id="clearButton">Clear</button>
+        <button id="backspaceButton">Backspace</button>
+    </div>
     <div id="vizcontainer"></div>
     <div id="graphcontainer"></div>
     <!-- <div id="detailoutercontainer">

@@ -19,6 +19,13 @@
     font-size: 5rem;
     z-index: -1;
 }
+#buttonContainer {
+    padding-right: 20px;
+}
+#buttonContainer button {
+    margin-right: 10px;
+    margin-top: 10px;
+}
 
 svg {
     overflow: visible;
