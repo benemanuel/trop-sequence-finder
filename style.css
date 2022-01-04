@@ -15,9 +15,15 @@
     top: 3rem;
     position: absolute;
     text-align: center;
-    font-family: "Times New Roman", serif;
-    font-size: 5rem;
     z-index: -1;
+    font-family: "Times New Roman", serif;
+}
+#searchSeq {
+    font-size: 5rem;
+}
+#occurrences {
+    direction: ltr;
+    font-size: 2rem;
 }
 #buttonContainer {
     padding-right: 20px;
@@ -26,6 +32,7 @@
     margin-right: 10px;
     margin-top: 10px;
 }
+
 
 svg {
     overflow: visible;
