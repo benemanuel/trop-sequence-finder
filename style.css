@@ -15,7 +15,6 @@
     top: 3rem;
     position: absolute;
     text-align: center;
-    z-index: -1;
     font-family: "Times New Roman", serif;
 }
 #searchSeq {
