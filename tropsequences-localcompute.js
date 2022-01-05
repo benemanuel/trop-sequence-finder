@@ -46,18 +46,8 @@ var svg = d3.select("#vizcontainer")
     .attr("direction", "rtl");
 
 var nodes = [];
-var links;
+
 var depthsums = d3.map([], function (s) { return s.depth; });
-// var linkline = d3.svg.diagonal();
-var linkline = function (d) {
-    // console.log(d); ok, so it has d.source and d.target
-    var starty = (d.source.y + tree.nodeSize()[1] / 2);
-    var endy = (d.target.y + tree.nodeSize()[1] / 2);
-    var startx = d.source.x;
-    var endx = d.target.x + tree.nodeSize()[0];
-    var pathstr = "M" + startx + " " + starty + "C " + (startx - hspace / 2) + " " + starty + ", " + (endx + hspace / 2) + " " + endy + ", " + endx + " " + endy;
-    return pathstr;
-};
 
 var probformat = d3.format(".1%");
 var countformat = d3.format(",");
@@ -101,7 +91,6 @@ function init(root) {
 
         d.prob = (d.count / depthsum) || 0;
     });
-    links = tree.links(nodes);
 
     update();
     initgraph();
@@ -183,16 +172,6 @@ function update() {
     node.classed("disabled", function (d) { return d.disabled; });
 
     node.exit().remove();
-
-    var link = svg.selectAll("path.link")
-        .data(links, function (d) { return d.target.name + "," + d.target.depth; });
-
-    link.enter().append("path")
-        .attr("class", "link");
-    link
-        .attr("d", linkline);
-    link.classed("disabled", linkclass);
-    link.exit().remove();
 }
 
 function linkclass(d) {
@@ -265,7 +244,6 @@ function applySearchSeq() {
         disaggregated.push(pasukobj);
     });
 
-
     if (searchSeq.length !== 0) {
         const occurenceText = totalOccurrences === 1 ? "1 occurrence." : `${totalOccurrences} occurrences.`;
         $("#occurrences").text(occurenceText);
@@ -274,7 +252,6 @@ function applySearchSeq() {
         $("#occurrences").text("");
     }
 
-    links = tree.links(nodes);
     update();
     graph();
 }
@@ -497,7 +474,6 @@ function switchSearchFrom(d) {
     var toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
 
     while (toclick.length > 0) {
-        // console.log(depth, toclick);
         nodeclick(toclick[0]);
         depth = depth + 1;
         toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
@@ -506,8 +482,6 @@ function switchSearchFrom(d) {
 d3.selectAll(".searchFrom")
     .datum(function () { return this.dataset; })
     .on("change", switchSearchFrom);
-
-
 
 var locationformat = function (t) {
     var split = t.split(",");
