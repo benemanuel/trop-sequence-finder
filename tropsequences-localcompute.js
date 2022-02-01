@@ -20,24 +20,24 @@ if (qs["book"] == "shirhashirim") {
     tanakhparts = "shirhashirim";
 }
 
-var graphHeight = 175;
+const GRAPH_HEIGHT = 175;
 
-var hspace = 60,
-    vspace = 0;
+const HSPACE = 60,
+    VSPACE = 0;
 
 var tree = d3.layout.tree()
     .nodeSize([210, 30]);
 // tree.nodeSize = function() {return [100, 100]; // setting this manually since I'm not using tree() anymore
 
-height = 27 * (tree.nodeSize()[1] + vspace);
-width = tree.nodeSize()[0] + hspace;
+height = 27 * (tree.nodeSize()[1] + VSPACE);
+width = tree.nodeSize()[0] + HSPACE;
 
 var x = d3.scale.linear()
     .domain([0, width])
     .range([width, 0]);
 
 d3.select("#vizcontainer")
-    .style({ "height": (window.innerHeight - graphHeight - 28) + "px" });
+    .style({ "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px" });
 
 var svg = d3.select("#vizcontainer")
     .append("svg")
@@ -114,8 +114,8 @@ function init(root) {
 
         d.disabled = false;
         d.clicked = false;
-        d.x = x(d.depth * (hspace + tree.nodeSize()[0])) - tree.nodeSize()[0];
-        d.y = i * (vspace + tree.nodeSize()[1]); // - d.depth*(vspace + tree.nodeSize()[1]);
+        d.x = x(d.depth * (HSPACE + tree.nodeSize()[0])) - tree.nodeSize()[0];
+        d.y = i * (VSPACE + tree.nodeSize()[1]); // - d.depth*(vspace + tree.nodeSize()[1]);
 
         d.prob = (d.count / depthsum) || 0;
     });
@@ -295,17 +295,17 @@ var graphWidth = window.innerWidth - 20;
 var graphsvg = d3.select("#graphcontainer")
     .append("svg")
     .attr("width", graphWidth)
-    .attr("height", graphHeight);
+    .attr("height", GRAPH_HEIGHT);
 
 var barg = graphsvg.append("g")
     .attr("width", graphWidth)
-    .attr("height", graphHeight - graphMargin.top - graphMargin.bottom)
+    .attr("height", GRAPH_HEIGHT - graphMargin.top - graphMargin.bottom)
     .attr("transform", "translate(" + graphMargin.left + ", " + graphMargin.top + ")");
 
 var graphx = d3.scale.ordinal()
     .rangeBands([graphWidth - graphMargin.right, graphMargin.left], .2);
 var graphy = d3.scale.linear()
-    .range([graphHeight - graphMargin.top - graphMargin.bottom, 0]);
+    .range([GRAPH_HEIGHT - graphMargin.top - graphMargin.bottom, 0]);
 var barwidth;
 var xAxis = d3.svg.axis()
     .orient("bottom")
@@ -313,7 +313,7 @@ var xAxis = d3.svg.axis()
     .outerTickSize(0);
 
 var xaxisg = graphsvg.append("g")
-    .attr("transform", "translate(" + graphMargin.left + ", " + (graphHeight - graphMargin.bottom) + ")")
+    .attr("transform", "translate(" + graphMargin.left + ", " + (GRAPH_HEIGHT - graphMargin.bottom) + ")")
     .attr("height", graphMargin.bottom);
 
 
@@ -338,18 +338,18 @@ function graph() {
         .attr("width", barwidth)
         .attr("x", function (d) { return graphx(d.key); })
         .attr("y", function (d) { return graphy(d.values[yValue]); })
-        .attr("height", function (d) { return (graphHeight - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); })
+        .attr("height", function (d) { return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); })
         .on("mouseover", dotooltip)
         .on("mouseout", function (d) { tooltipg.selectAll("g.mytooltip").remove(); })
         .on("click", graphclick);
 
     bar.transition().duration(250)
         .attr("y", function (d) { return graphy(d.values[yValue]); })
-        .attr("height", function (d) { return (graphHeight - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); });
+        .attr("height", function (d) { return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); });
 
     bar.exit().transition().duration(250)
         .attr("height", 1)
-        .attr("y", graphHeight - graphMargin.bottom - graphMargin.top);
+        .attr("y", GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top);
 }
 
 var perekindex;
@@ -547,7 +547,7 @@ var linkformat = function (t) {
 
 d3.select(window).on("resize", function () {
     d3.select("#vizcontainer")
-        .style({ "height": (window.innerHeight - graphHeight - 28) + "px" });
+        .style({ "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px" });
 
     graphWidth = window.innerWidth - 20;
     graphsvg.attr("width", graphWidth);
@@ -560,12 +560,12 @@ d3.select(window).on("resize", function () {
         .attr("x", function (d) { return graphx(d.key); });
 
     d3.select("#cog")
-        .style({ "top": (window.innerHeight - graphHeight - 48) + "px" });
+        .style({ "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px" });
 });
 
 
 d3.select("#cog")
-    .style({ "top": (window.innerHeight - graphHeight - 48) + "px" });
+    .style({ "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px" });
 
 $("#cog").click(function () { $("#tab-settings").tab("show"); });
 
