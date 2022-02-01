@@ -83,9 +83,40 @@ var tropnames = d3.map([
 
 var tropstrings;
 var disaggregated;
+const settings = {
+    frombeginning: false,
+};
 
-var frombeginning = false;
-var frombeginningprefix = function () { return frombeginning ? "^" : ""; };
+d3.selectAll(".searchFrom")
+    .datum(function () { return this.dataset; })
+    .on("change", switchSearchFrom);
+
+function switchSearchFrom(d) {
+    settings.frombeginning = d.value == "beginning" ? true : false;
+    nodes = [];
+    depthsums = d3.map([], function (s) { return s.depth; }); // I could probably just kill depthsums entirely. doubt i'm getting much performance gain from caching like this
+    init(tropstrings);
+
+    var depth = 0;
+    var oldQuery = ancestrynames.map(function (a) { return a; }); // deep copy
+    var toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
+
+    while (toclick.length > 0) {
+        nodeclick(toclick[0]);
+        depth = depth + 1;
+        toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
+    }
+}
+
+function switchYvalue(d) {
+    yValue = d.value;
+    graph();
+}
+d3.selectAll(".graphValues")
+    .datum(function () { return this.dataset; })
+    .on("change", switchYvalue);
+
+var frombeginningprefix = function () { return settings.frombeginning ? "^" : ""; };
 
 d3.json(dataFile, init);
 function init(root) {
@@ -481,35 +512,6 @@ function graphclick(d) {
         });
     });
 }
-
-
-function switchYvalue(d) {
-    yValue = d.value;
-    graph();
-}
-d3.selectAll(".graphValues")
-    .datum(function () { return this.dataset; })
-    .on("change", switchYvalue);
-
-function switchSearchFrom(d) {
-    frombeginning = d.value == "beginning" ? true : false;
-    nodes = [];
-    depthsums = d3.map([], function (s) { return s.depth; }); // I could probably just kill depthsums entirely. doubt i'm getting much performance gain from caching like this
-    init(tropstrings);
-
-    var depth = 0;
-    var oldQuery = ancestrynames.map(function (a) { return a; }); // deep copy
-    var toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
-
-    while (toclick.length > 0) {
-        nodeclick(toclick[0]);
-        depth = depth + 1;
-        toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
-    }
-}
-d3.selectAll(".searchFrom")
-    .datum(function () { return this.dataset; })
-    .on("change", switchSearchFrom);
 
 var locationformat = function (t) {
     var split = t.split(",");
