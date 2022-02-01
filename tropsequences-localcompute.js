@@ -85,6 +85,7 @@ var tropstrings;
 var disaggregated;
 const settings = {
     frombeginning: false,
+    displayExample: false
 };
 
 d3.selectAll(".searchFrom")
@@ -107,6 +108,15 @@ function switchSearchFrom(d) {
         toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
     }
 }
+
+function switchDisplaySetting(d) {
+    settings.displayExample = d.value === "example";
+    applySearchSeq();
+}
+
+d3.selectAll(".displaySetting")
+    .datum(function () { return this.dataset; })
+    .on("change", switchDisplaySetting);
 
 function switchYvalue(d) {
     yValue = d.value;
@@ -269,7 +279,16 @@ function backspaceClick() {
 
 function applySearchSeq() {
     const searchString = searchSeq.map((trop) => trop.char).join("");
-    const searchText = searchSeq.map((trop) => trop.heb).join(" ");
+    const searchText = searchSeq
+        .map((trop) => {
+            if (settings.displayExample && trop.examples.length) {
+                return trop.examples[Math.floor(Math.random() * trop.examples.length)];
+            }
+            else {
+                return trop.heb;
+            }
+        })
+        .join(" ");
 
     $("#searchSeq").text(searchText);
 
