@@ -165,6 +165,12 @@ function init(root) {
     initgraph();
     $("#clearButton").click(clearClick);
     $("#backspaceButton").click(backspaceClick);
+    window.addEventListener("keydown", (e) => {
+        if (e.key === 'Backspace') {
+            backspaceClick();
+        }
+    });
+
 }
 
 var pos = function (d, i) {
