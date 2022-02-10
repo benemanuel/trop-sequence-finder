@@ -51,7 +51,7 @@ var depthsums = d3.map([], function (s) { return s.depth; });
 
 var probformat = d3.format(".1%");
 var countformat = d3.format(",");
-var tropnames = d3.map([
+const TROP = [
     { "char": "\u0597", "name": "revii", "heb": "רְבִיעִ֗י", "examples": ["בָּ֗רָא", "בָּרָ֗א"] },
     { "char": "\u059d", "name": "gereshmukdam", "examples": [] },
     { "char": "\u05a6", "name": "merkhakfula", "heb": "מֵרְכָא־כְפוּלָ֦ה", "examples": [] },
@@ -79,7 +79,8 @@ var tropnames = d3.map([
     { "char": "\u05a1", "name": "pazer", "heb": "פָּזֵ֡ר", "examples": ["בָּ֡רָא", "בָּרָ֡א"] },
     { "char": "\u05a4", "name": "mapakh", "heb": "מַהְפַּ֤ך", "examples": ["בָּ֤רָא", "בָּרָ֤א"] },
     { "char": "\u0594", "name": "katan", "heb": "קָטָ֔ן", "examples": ["בָּ֔רָא", "בָּרָ֔א"] }
-], function (t) { return t.name; });
+];
+var tropnames = d3.map(TROP, function (t) { return t.name; });
 
 var tropstrings;
 var disaggregated;
@@ -170,6 +171,7 @@ function init(root) {
             backspaceClick();
         }
     });
+    $("#randomButton").click(randomClick);
 
 }
 
@@ -280,6 +282,13 @@ function clearClick() {
 }
 function backspaceClick() {
     searchSeq = searchSeq.slice(0, -1);
+    applySearchSeq();
+}
+
+/** Sets the searchSeq to a random passuk */
+function randomClick() {
+    const pasuk = tropstrings[Math.floor(Math.random() * tropstrings.length)];
+    searchSeq = [...pasuk.trop].map((tropChar) => tropnames.values().find((trop) => trop.char === tropChar));
     applySearchSeq();
 }
 
