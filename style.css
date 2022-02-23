@@ -1,6 +1,10 @@
 /*body {
     margin-top: 0;
 }*/
+.word-span {
+    margin: 0 4px;
+    display: inline-block;
+}
 
 #vizcontainer {
     overflow-y: scroll;
@@ -67,6 +71,7 @@ svg {
 }
 .node.disabled text {
     fill: #777;
+    opacity: 0.7;
 }
 
 .node text.tropchar {

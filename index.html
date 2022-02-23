@@ -22,7 +22,6 @@
 </head>
 
 <body dir="rtl">
-
     <div id="cog" data-toggle="modal" data-target="#prefs"><span class="glyphicon glyphicon-cog"></span></div>
     <div class="modal fade" id="prefs" tabindex="-1" role="dialog" aria-labelledby="prefsLabel">
         <div class="modal-dialog" role="document">
@@ -203,18 +202,34 @@
                             </div>
 
                             <h5>Display Sequence</h5>
+                            <h6>Word Shown</h6>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="displaySetting" class="displaySetting" value="trop"
+                                    <input type="radio" name="displaySettingWord" class="displaySettingWord" value="trop"
                                         data-value="trop" checked>
                                     Show <em>trop</em> name
                                 </label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="displaySetting" class="displaySetting" value="example"
+                                    <input type="radio" name="displaySettingWord" class="displaySettingWord" value="example"
                                         data-value="example">
                                     Show an example word with the <em>trop</em>
+                                </label>
+                            </div>
+                            <h6>Colors</h6>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="displaySettingColor" class="displaySettingColor" value="trop"
+                                        data-value="black" checked>
+                                    All black
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="displaySettingColor" class="displaySettingColor" value="example"
+                                        data-value="colored">
+                                    Colored
                                 </label>
                             </div>
 
