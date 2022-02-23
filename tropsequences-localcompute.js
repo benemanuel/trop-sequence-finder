@@ -27,10 +27,9 @@ const HSPACE = 60,
 
 var tree = d3.layout.tree()
     .nodeSize([210, 30]);
-// tree.nodeSize = function() {return [100, 100]; // setting this manually since I'm not using tree() anymore
 
-height = 27 * (tree.nodeSize()[1] + VSPACE);
-width = tree.nodeSize()[0] + HSPACE;
+const height = 27 * (tree.nodeSize()[1] + VSPACE);
+const width = tree.nodeSize()[0] + HSPACE;
 
 var x = d3.scale.linear()
     .domain([0, width])
