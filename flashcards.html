@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trop Flash Cards</title>
+</head>
+<body>
+    <style>
+        #con {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #card {
+            margin: 2rem 4rem;
+            max-width: 50rem;
+        }
+        #remaining {
+            text-align: center;
+        }
+        #current-trop {
+            text-align: center;
+            font-size: 7rem;
+        }
+    </style>
+    <div id="con">
+        <h1>Trop Flash Cards</h1>
+        <div class="button-con">
+            <button onclick="pick()">Pick</button>
+            <button onclick="resetDeck()">Reset</button>
+            <label>
+                <input type="radio" name="exampleRadio" value="trop" checked onchange="radioChange(this)">
+                <em>Trop</em> name
+            </label>
+            <label>
+                <input type="radio" name="exampleRadio" value="example" onchange="radioChange(this)">
+                Example
+            </label>
+        </div>
+        <div id="card">
+            <div id="remaining"></div>
+            <div id="current-trop"></div>
+        </div>
+    </div>
+    <script src="flashcards.js" type="text/javascript"></script>
+</body>
+</html>
