@@ -24,20 +24,42 @@
             text-align: center;
             font-size: 7rem;
         }
+        .button-con {
+            margin-top: 1rem;
+        }
+        .button-con > button {
+            font-size: 1.3rem;
+            padding: 0.3rem 1.4rem;
+            margin: 0 0.5rem;
+        }
+        .my {
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
     </style>
     <div id="con">
         <h1>Trop Flash Cards</h1>
+        <div class="my">
+            Display:
+            <label>
+                <input type="radio" name="exampleRadio" value="trop" checked onchange="changeDisplay(this)"> <em>Trop</em> name
+            </label>
+            <label>
+                <input type="radio" name="exampleRadio" value="example" onchange="changeDisplay(this)"> Example
+            </label>
+        </div>
+        <div class="my">
+            Length:
+            <label>
+                <input type="radio" name="packRadio" value="single" checked onchange="changePack(this)"> Single
+            </label>
+            <label>
+                <input type="radio" name="packRadio" value="sequence" onchange="changePack(this)"> Sequence
+            </label>
+        </div>
         <div class="button-con">
             <button onclick="pick()">Pick</button>
             <button onclick="resetDeck()">Reset</button>
-            <label>
-                <input type="radio" name="exampleRadio" value="trop" checked onchange="radioChange(this)">
-                <em>Trop</em> name
-            </label>
-            <label>
-                <input type="radio" name="exampleRadio" value="example" onchange="radioChange(this)">
-                Example
-            </label>
         </div>
         <div id="card">
             <div id="remaining"></div>

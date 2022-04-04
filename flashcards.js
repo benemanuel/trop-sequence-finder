@@ -28,27 +28,38 @@ const TROP = [
     // { "char": "\u0598", "name": "tsinnorit", "color": "dodgerblue", "heb": "צִנּוֹרִת֘", "examples": [] },
     // { "char": "\u059d", "name": "gereshmukdam", "color": "dodgerblue", "examples": [] },
 ];
+const TROP_M = Object.fromEntries(TROP.map(t => [t.name, t]));
+const SEQUENCES = [
+    [TROP_M.kadma, TROP_M.mapakh, TROP_M.pashta, TROP_M.katan],
+    [TROP_M.gershayim, TROP_M.mapakh, TROP_M.pashta, TROP_M.katan],
+    [TROP_M.zarka, TROP_M.segol, TROP_M.revii, TROP_M.pashta, TROP_M.katan],
+    [TROP_M.munakh, TROP_M.katan, TROP_M.tipkha, TROP_M.sofpasuk],
+    [TROP_M.munakh, TROP_M.munakh, TROP_M.revii],
+    [TROP_M.merkha, TROP_M.tipkha, TROP_M.sofpasuk],
+    [TROP_M.gadol, TROP_M.merkha, TROP_M.tipkha, TROP_M.sofpasuk],
+    [TROP_M.darga, TROP_M.tevir, TROP_M.merkha, TROP_M.tipkha, TROP_M.sofpasuk],
+    [TROP_M.tipkha, TROP_M.merkha, TROP_M.sofpasuk],
+    [TROP_M.pazer, TROP_M.telishaketana, TROP_M.kadma, TROP_M.geresh, TROP_M.revii],
+]
 
-let deck = [...TROP];
-let currentTrop = undefined;
+let pack = TROP;
+let deck = [...pack];
+let current = undefined;
 
 let showExample = false;
 
-function setCurrentTrop(trop) {
-    currentTrop = trop;
+function setCurrent(value) {
+    current = value;
     updateCard();
 }
 
 function updateCard() {
-    const trop = currentTrop;
-    if (trop) {
-        if (showExample) {
-            const randomExample = trop.examples[Math.floor(Math.random() * trop.examples.length)];
-            $("#current-trop").textContent = randomExample || "";
-        }
-        else {
-            $("#current-trop").textContent = trop?.heb || "";
-        }
+    const value = current;
+    if (value) {
+        const getExample = (t) => t.examples[Math.floor(Math.random() * t.examples.length)];
+        const getText = showExample ? getExample : (t) => t.heb;
+        const str = Array.isArray(value) ? value.map(getText).join(" ") : getText(value);
+        $("#current-trop").textContent = str;
     }
     else  {
         $("#current-trop").textContent = "";
@@ -61,17 +72,22 @@ function pick() {
         const randomIndex = Math.floor(Math.random() * deck.length);
         // this line also REMOVES the selected trop from the deck
         const randomTrop = deck.splice(randomIndex, 1)[0];
-        setCurrentTrop(randomTrop);
+        setCurrent(randomTrop);
     }
 }
 
 function resetDeck() {
-    deck = [...TROP];
-    setCurrentTrop(undefined);
+    deck = [...pack];
+    setCurrent(undefined);
 }
-setCard(undefined)
+setCurrent(undefined)
 
-function radioChange(target) {
+function changeDisplay(target) {
     showExample = target.value === "example";
     updateCard();
+}
+function changePack(target) {
+    pack = target.value === "single" ? TROP : SEQUENCES;
+    deck = [...pack];
+    setCurrent(undefined)
 }
