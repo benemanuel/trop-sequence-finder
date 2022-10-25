@@ -1,5 +1,6 @@
-var dataFile = "tropstrings.json";
-var tanakhparts = "torah";
+var dataFile = "tropstrings-tanach.json";
+//var tanakhparts = "torah";
+var tanakhparts = "tanach";
 
 // https://stackoverflow.com/a/3855394
 var qs = (function (a) {
@@ -451,16 +452,50 @@ function initgraph() {
     xAxis
         .scale(graphx)
         .tickValues(perekindex.filter(function (p) {
-            if (tanakhparts == "torah") return p.endsWith(",1");
+            if (tanakhparts == "tanach") return p.endsWith(",1");
             else if (tanakhparts == "shirhashirim") return p;
         }))
         .tickFormat(function (t) {
-            if (tanakhparts == "torah") {
-                if (t == "bereshit,1") return "בראשית";
-                else if (t == "shmot,1") return "שמות";
-                else if (t == "vayikra,1") return "ויקרא";
-                else if (t == "bmidbar,1") return "במדבר";
-                else if (t == "dvarim,1") return "דברים";
+            if (tanakhparts == "tanach") {
+                if (t == "Genesis,1") return "בראשית";
+                else if (t == "Exodus,1") return "שמות";
+                else if (t == "Leviticus,1") return "ויקרא";
+                else if (t == "Numbers,1") return "במדבר";
+                else if (t == "Deuteronomy,1") return "דברים";
+                else if (t == "Joshua,1") return "יהושע";
+                else if (t == "Judges,1") return "שופטים";
+                else if (t == "Ruth,1") return "רות";
+                else if (t == "1Samuel,1") return "שמואל א׳";
+                else if (t == "2Samuel,1") return "שמואל ב׳";
+                else if (t == "1Kings,1") return "מלכים א׳";
+                else if (t == "2Kings,1") return "מלכים ב׳";
+                else if (t == "1Chronicles,1") return "דברי הימים א׳";
+                else if (t == "2Chronicles,1") return "דברי הימים ב׳";
+                else if (t == "Ezra,1") return "עזרא";
+                else if (t == "Nehemiah,1") return "נחמיה";
+                else if (t == "Esther,1") return "מגילת אסתר";
+                else if (t == "Job,1") return "איוב";
+                else if (t == "Psalms,1") return "תהילים";
+                else if (t == "Proverbs,1") return "משלי";
+                else if (t == "Ecclesiastes,1") return "קהלת";
+                else if (t == "Songofsongs,1") return "שיר השירים";
+                else if (t == "Isaiah,1") return "ישעיהו";
+                else if (t == "Jeremiah,1") return "ירמיהו";
+                else if (t == "Lamentations,1") return "מגילת איכה";
+                else if (t == "Ezekiel,1") return "יחזקאל";
+                else if (t == "Daniel,1") return "דניאל";
+                else if (t == "Hosea,1") return "הושע";
+                else if (t == "Joel,1") return "יואל";
+                else if (t == "Amos,1") return "עמוס";
+                else if (t == "Obadiah,1") return "עובדיה";
+                else if (t == "Jonah,1") return "יונה";
+                else if (t == "Micah,1") return "מיכה";
+                else if (t == "Nahum,1") return "נחום";
+                else if (t == "Habakkuk,1") return "חבקוק";
+                else if (t == "Zephaniah,1") return "צפניה";
+                else if (t == "Haggai,1") return "חגי";
+                else if (t == "Zechariah,1") return "זכריה";
+                else if (t == "Malachi,1") return "מלאכי";
                 else return t;
             }
             else if (tanakhparts == "shirhashirim") {
@@ -498,8 +533,46 @@ function aggregate(data, by) {
 
 function sortperekindex(a, b) {
     var order = [];
-    if (tanakhparts == "torah") {
-        order = ["bereshit", "shmot", "vayikra", "bmidbar", "dvarim"];
+    if (tanakhparts == "tanach") {
+        order = ["Genesis",
+        "Exodus",
+        "Leviticus",
+        "Numbers",
+        "Deuteronomy",
+        "Joshua",
+        "Judges",
+        "Ruth",
+        "1Samuel",
+        "2Samuel",
+        "1Kings",
+        "2Kings",
+        "1Chronicles",
+        "2Chronicles",
+        "Ezra",
+        "Nehemiah",
+        "Esther",
+        "Job",
+        "Psalms",
+        "Proverbs",
+        "Ecclesiastes",
+        "Songofsongs",
+        "Isaiah",
+        "Jeremiah",
+        "Lamentations",
+        "Ezekiel",
+        "Daniel",
+        "Hosea",
+        "Joel",
+        "Amos",
+        "Obadiah",
+        "Jonah",
+        "Micah",
+        "Nahum",
+        "Habakkuk",
+        "Zephaniah",
+        "Haggai",
+        "Zechariah",
+        "Malachi"];  
     }
     else if (tanakhparts == "shirhashirim") {
         order = ["shirhashirim"];
@@ -553,15 +626,15 @@ function graphclick(d) {
 
     d3.select("#detailsModalLabel").html(locationformat(d.key));
     d3.select("#currentSearch").html(ancestrynames.map(function (d) { return tropnames.get(d).heb; }).join(" "));
-    d3.select("#detailsContainer").html('<div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"></div></div>');
+    d3.select("#detailsContainer").html('<div class= "progress"><div class= "progress-bar progress-bar-striped active" role= "progressbar" style= "width: 100%"></div></div>');
     $("#detailsModal").modal("show");
 
     var textlist = [];
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
     d3.jsonp("//www.sefaria.org/api/texts/" + linkformat(d.key) + "?lang=he&commentary=0&context=0&callback={callback}", function (r) {
         textlist = d3.map(r.he.map(function (t, p) { return { 'pasuk': p + 1, 'text': t }; }), function (p) { return p.pasuk; });
-        d3.select("#in").html('<table id="indetails"></div>');
-        d3.select("#not-in").html('<table id="outdetails"></div>');
+        d3.select("#in").html('<table id= "indetails"></div>');
+        d3.select("#not-in").html('<table id= "outdetails"></div>');
         pasuklist.forEach(function (p) {
             d3.select("#indetails").append("tr").html("<td class='pasuknum'>" + p.pasuk + "</td><td class='pasuktext'>" + textlist.get(p.pasuk).text + "</td>"); //p.sefer + " " + p.perek + " " + p.pasuk);
         });
@@ -575,12 +648,46 @@ var locationformat = function (t) {
     var split = t.split(",");
 
     var sefer;
-    if (tanakhparts == "torah") {
-        if (split[0] == "bereshit") sefer = "בראשית"; // "Bereshit";
-        else if (split[0] == "shmot") sefer = "שמות"; // "Shmot";
-        else if (split[0] == "vayikra") sefer = "ויקרא"; // "Vayikra";
-        else if (split[0] == "bmidbar") sefer = "במדבר"; // "B’midbar";
-        else if (split[0] == "dvarim") sefer = "דברים"; // "D’varim";
+    if (tanakhparts == "tanach") {
+        if (split[0] == "Genesis") sefer = "בראשית";
+        else if (split[0] == "Exodus") sefer = "שמות";
+        else if (split[0] == "Leviticus") sefer = "ויקרא";
+        else if (split[0] == "Numbers") sefer = "במדבר";
+        else if (split[0] == "Deuteronomy") sefer = "דברים";
+        else if (split[0] == "Joshua") sefer = "יהושע";
+        else if (split[0] == "Judges") sefer = "שופטים";
+        else if (split[0] == "Ruth") sefer = "רות";
+        else if (split[0] == "1Samuel") sefer = "שמואל א׳";
+        else if (split[0] == "2Samuel") sefer = "שמואל ב׳";
+        else if (split[0] == "1Kings") sefer = "מלכים א׳";
+        else if (split[0] == "2Kings") sefer = "מלכים ב׳";
+        else if (split[0] == "1Chronicles") sefer = "דברי הימים א׳";
+        else if (split[0] == "2Chronicles") sefer = "דברי הימים ב׳";
+        else if (split[0] == "Ezra") sefer = "עזרא";
+        else if (split[0] == "Nehemiah") sefer = "נחמיה";
+        else if (split[0] == "Esther") sefer = "מגילת אסתר";
+        else if (split[0] == "Job") sefer = "איוב";
+        else if (split[0] == "Psalms") sefer = "תהילים";
+        else if (split[0] == "Proverbs") sefer = "משלי";
+        else if (split[0] == "Ecclesiastes") sefer = "קהלת";
+        else if (split[0] == "Songofsongs") sefer = "שיר השירים";
+        else if (split[0] == "Isaiah") sefer = "ישעיהו";
+        else if (split[0] == "Jeremiah") sefer = "ירמיהו";
+        else if (split[0] == "Lamentations") sefer = "מגילת איכה";
+        else if (split[0] == "Ezekiel") sefer = "יחזקאל";
+        else if (split[0] == "Daniel") sefer = "דניאל";
+        else if (split[0] == "Hosea") sefer = "הושע";
+        else if (split[0] == "Joel") sefer = "יואל";
+        else if (split[0] == "Amos") sefer = "עמוס";
+        else if (split[0] == "Obadiah") sefer = "עובדיה";
+        else if (split[0] == "Jonah") sefer = "יונה";
+        else if (split[0] == "Micah") sefer = "מיכה";
+        else if (split[0] == "Nahum") sefer = "נחום";
+        else if (split[0] == "Habakkuk") sefer = "חבקוק";
+        else if (split[0] == "Zephaniah") sefer = "צפניה";
+        else if (split[0] == "Haggai") sefer = "חגי";
+        else if (split[0] == "Zechariah") sefer = "זכריה";
+        else if (split[0] == "Malachi") sefer = "מלאכי";
     }
     else if (tanakhparts == "shirhashirim") sefer = "שיר השירים";
 
@@ -591,12 +698,46 @@ var linkformat = function (t) {
     var split = t.split(",");
 
     var sefer;
-    if (tanakhparts == "torah") {
-        if (split[0] == "bereshit") sefer = "Genesis";
-        else if (split[0] == "shmot") sefer = "Exodus";
-        else if (split[0] == "vayikra") sefer = "Leviticus";
-        else if (split[0] == "bmidbar") sefer = "Numbers";
-        else if (split[0] == "dvarim") sefer = "Deuteronomy";
+    if (tanakhparts == "tanach") {
+        if (split[0] == "Genesis") sefer = "Genesis";
+        else if (split[0] == "Exodus") sefer = "Exodus";
+        else if (split[0] == "Leviticus") sefer = "Leviticus";
+        else if (split[0] == "Numbers") sefer = "Numbers";
+        else if (split[0] == "Deuteronomy") sefer = "Deuteronomy";
+        else if (split[0] == "Joshua") sefer = "Joshua";
+        else if (split[0] == "Judges") sefer = "Judges";
+        else if (split[0] == "Ruth") sefer = "Ruth";
+        else if (split[0] == "1Samuel") sefer = "1Samuel";
+        else if (split[0] == "2Samuel") sefer = "2Samuel";
+        else if (split[0] == "1Kings") sefer = "1Kings";
+        else if (split[0] == "2Kings") sefer = "2Kings";
+        else if (split[0] == "1Chronicles") sefer = "1Chronicles";
+        else if (split[0] == "2Chronicles") sefer = "2Chronicles";
+        else if (split[0] == "Ezra") sefer = "Ezra";
+        else if (split[0] == "Nehemiah") sefer = "Nehemiah";
+        else if (split[0] == "Esther") sefer = "Esther";
+        else if (split[0] == "Job") sefer = "Job";
+        else if (split[0] == "Psalms") sefer = "Psalms";
+        else if (split[0] == "Proverbs") sefer = "Proverbs";
+        else if (split[0] == "Ecclesiastes") sefer = "Ecclesiastes";
+        else if (split[0] == "Songofsongs") sefer = "Songofsongs";
+        else if (split[0] == "Isaiah") sefer = "Isaiah";
+        else if (split[0] == "Jeremiah") sefer = "Jeremiah";
+        else if (split[0] == "Lamentations") sefer = "Lamentations";
+        else if (split[0] == "Ezekiel") sefer = "Ezekiel";
+        else if (split[0] == "Daniel") sefer = "Daniel";
+        else if (split[0] == "Hosea") sefer = "Hosea";
+        else if (split[0] == "Joel") sefer = "Joel";
+        else if (split[0] == "Amos") sefer = "Amos";
+        else if (split[0] == "Obadiah") sefer = "Obadiah";
+        else if (split[0] == "Jonah") sefer = "Jonah";
+        else if (split[0] == "Micah") sefer = "Micah";
+        else if (split[0] == "Nahum") sefer = "Nahum";
+        else if (split[0] == "Habakkuk") sefer = "Habakkuk";
+        else if (split[0] == "Zephaniah") sefer = "Zephaniah";
+        else if (split[0] == "Haggai") sefer = "Haggai";
+        else if (split[0] == "Zechariah") sefer = "Zechariah";
+        else if (split[0] == "Malachi") sefer = "Malachi";
     }
     else if (tanakhparts == "shirhashirim") {
         sefer = "Song_of_Songs";

@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'SBL Hebrew';
+    src: local('SBL Hebrew'), local('SBLHebrew'),
+        url('fonts/SBLHebrew.woff2') format('woff2'),
+        url('fonts/SBLHebrew.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: fallback;
+}
+
 /*body {
     margin-top: 0;
 }*/
@@ -19,7 +29,7 @@
     top: 3rem;
     position: absolute;
     text-align: center;
-    font-family: "Times New Roman", serif;
+    font-family: "SBL Hebrew", serif;
 }
 
 #searchSeq {
@@ -84,7 +94,7 @@ svg {
 
 .node text.tropchar {
     font-size: 0px;
-    font-family: "Times New Roman";
+    font-family: "SBL Hebrew";
 }
 
 .node text {
@@ -93,7 +103,7 @@ svg {
 }
 
 .node text.name {
-    font-family: "Times New Roman";
+    font-family: "SBL Hebrew";
     font-size: 24px;
     direction: rtl;
 }
@@ -194,7 +204,7 @@ svg {
     height: 100%;
     overflow-y: scroll;*/
 
-    font-family: "Times New Roman";
+    font-family: "SBL Hebrew";
     font-size: 24px;
     /*margin: auto;*/
 }
@@ -218,7 +228,7 @@ svg {
 }
 
 #detailsModal #currentSearch {
-    font-family: "Times New Roman";
+    font-family: "SBL Hebrew";
     font-size: 20px;
     margin-right: 18px;
 }
@@ -251,7 +261,7 @@ svg {
 }
 
 .trop {
-    font-family: "Times New Roman";
+    font-family: "SBL Hebrew";
 }
 
 a.license:hover {
