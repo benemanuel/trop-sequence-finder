@@ -1,6 +1,4 @@
 var dataFile = "tropstrings-tanach.json";
-//var dataFile = "tropstrings-Songofsongs.json.saved";
-//var tanakhparts = "torah";
 var tanakhparts = "tanach";
 
 // https://stackoverflow.com/a/3855394
@@ -54,36 +52,28 @@ var probformat = d3.format(".1%");
 var countformat = d3.format(",");
 const TROP = [
     { "char": "\u0591", "name": "ETNAHTA", "color": "red", "heb": "אֶתְנַחְתָּ֑א", "examples": [] },
-    { "char": "\u0592", "name": "SEGOL", "color": "yellowish pink", "heb": "סְגוֺלְתָּא֒", "examples": [] },
-    { "char": "\u0593", "name": "SHALSHELET", "color": "orange yellow", "heb": "שַׁלְשֶׁ֓לֶת", "examples": [] },
-    { "char": "\u0594", "name": "ZAQEF-QATAN", "color": "gray", "heb": "זָקֵף קָטֹ֔ן", "examples": [] },
-    { "char": "\u0595", "name": "ZAQEF-GADOL", "color": "light gray", "heb": "זָקֵף גָּד֕וֹל", "examples": [] },
-    { "char": "\u0596", "name": "TIPEHA", "color": "magenta", "heb": "טִפְּחָ֖א", "examples": [] },
-    { "char": "\u0597", "name": "REVIA", "color": "buff", "heb": "רְבִ֗יעַ", "examples": [] },
-    { "char": "\u0598", "name": "ZARQA", "color": "light green", "heb": "זַרְקָא֮", "examples": [] },
-    { "char": "\u0599", "name": "PASHTA", "color": "light violet", "heb": "פַּשְׁטָא֙", "examples": [] },
-    { "char": "\u059a", "name": "YETIV", "color": "yellow", "heb": "יְ֚תִיב", "examples": [] },
-    { "char": "\u059b", "name": "TEVIR", "color": "green", "heb": "תְּבִ֛יר", "examples": [] },
-    { "char": "\u059c", "name": "GERESH", "color": "light magenta", "heb": "גֵּ֜רֵשׁ", "examples": [] },
-    { "char": "\u05a0", "name": "TELISHA-GEDOLA", "color": "light red", "heb": "תְּ֠לִישָא גְדוֹלָה", "examples": [] },
-    { "char": "\u05a1", "name": "PAZER", "color": "purplish pink", "heb": "פָּזֵ֡ר", "examples": [] },
-    { "char": "\u05a2", "name": "YERAH-BEN-YOMO", "color": "cyan", "heb": "יָרֵחַ בֶּן יוֹמ֪וֹ", "examples": [] },
-    { "char": "\u05a3", "name": "MUNAH", "color": "orange", "heb": "מֻנַּ֣ח", "examples": [] },
-    { "char": "\u05a5", "name": "MERKHA", "color": "violet", "heb": "מֵרְכָ֥א", "examples": [] },
-    { "char": "\u05a7", "name": "DARGA", "color": "olive green", "heb": "דַּרְגָּ֧א", "examples": [] },
-    { "char": "\u05a9", "name": "TELISHA-QETANA", "color": "light blue", "heb": "תְּלִישָׁא קְטַנָּה֩", "examples": [] },
-    { "char": "\u05ab", "name": "OLE", "color": "light yellow", "heb": "עוֺלֶ֫ה", "examples": [] },
-    { "char": "\u05ac", "name": "ILUY", "color": "light orange", "heb": "עִלּ֬וּי", "examples": [] },
-    { "char": "\u05bd", "name": "METEG", "color": "blue", "heb": "מֶֽתֶג", "examples": [] },
-    { "char": "\u059d", "name": "gereshmukdam", "color": "dodgerblue", "examples": [] },
-    { "char": "\u059e", "name": "gershayim", "color": "darkcyan", "heb": "גֵּרְשַׁ֞יִם", "examples": ["בָּרָ֞א", "בָּ֞רָא"] },
-    { "char": "\u059f", "name": "karnepara", "color": "dodgerblue", "heb": "קַרְנֵי פָרָ֟ה", "examples": [] },
-    { "char": "\u05a4", "name": "mapakh", "color": "darkcyan", "heb": "מַהְפַּ֤ך", "examples": ["בָּ֤רָא", "בָּרָ֤א"] },
-    { "char": "\u05a6", "name": "merkhakfula", "color": "dodgerblue", "heb": "מֵרְכָא־כְפוּלָ֦ה", "examples": [] },
-    { "char": "\u05a8", "name": "kadma", "color": "darksalmon", "heb": "קַדְמָ֨א", "examples": ["בָּרָ֙א", "בָּ֙רָא"] },
-    { "char": "\u05aa", "name": "yerakhbenyomo", "color": "dodgerblue", "heb": "יֵרֶח בֶּן יוֹמ֪וֹ", "examples": [] },
-    { "char": "\u05ae", "name": "zarka", "color": "darkcyan", "heb": "זַרְקָא֮", "examples": ["בָּרָ֘א"] },
-    { "char": "\u05c3", "name": "sofpasuk", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
+{ "char": "\u0592", "name": "SEGOL", "color": "hotpink", "heb": "סְגוֺלְתָּא֒", "examples": [] },
+{ "char": "\u0593", "name": "SHALSHELET", "color": "goldenrod", "heb": "שַׁלְשֶׁ֓לֶת", "examples": [] },
+{ "char": "\u0594", "name": "ZAQEF-QATAN", "color": "gray", "heb": "זָקֵף קָטֹ֔ן", "examples": [] },
+{ "char": "\u0595", "name": "ZAQEF-GADOL", "color": "lightgray", "heb": "זָקֵף גָּד֕וֹל", "examples": [] },
+{ "char": "\u0596", "name": "TIPEHA", "color": "magenta", "heb": "טִפְּחָ֖א", "examples": [] },
+{ "char": "\u0597", "name": "REVIA", "color": "brown", "heb": "רְבִ֗יעַ", "examples": [] },
+{ "char": "\u0598", "name": "ZARQA", "color": "greenyellow", "heb": "זַרְקָא֮", "examples": [] },
+{ "char": "\u0599", "name": "PASHTA", "color": "blueviolet", "heb": "פַּשְׁטָא֙,קַדְמָ֨א ", "examples": [] },
+{ "char": "\u059a", "name": "YETIV", "color": "yellow", "heb": "יְ֚תִיב,שׁוֺפָר מְהֻפָּ֤ךְ", "examples": [] },
+{ "char": "\u059b", "name": "TEVIR", "color": "green", "heb": "תְּבִ֛יר", "examples": [] },
+{ "char": "\u059c", "name": "GERESH", "color": "steelblue", "heb": "גֵּ֜רֵשׁ", "examples": [] },
+{ "char": "\u05a0", "name": "TELISHA-GEDOLA", "color": "indianred", "heb": "תְּ֠לִישָא גְדוֹלָה", "examples": [] },
+{ "char": "\u05a1", "name": "PAZER", "color": "purplish pink", "heb": "פָּזֵ֡ר", "examples": [] },
+{ "char": "\u05a2", "name": "YERAH-BEN-YOMO", "color": "cyan", "heb": "יָרֵחַ בֶּן יוֹמ֪וֹ", "examples": [] },
+{ "char": "\u05a3", "name": "MUNAH", "color": "orange", "heb": "מֻנַּ֣ח", "examples": [] },
+{ "char": "\u05a5", "name": "MERKHA", "color": "violet", "heb": "מֵרְכָ֥א", "examples": [] },
+{ "char": "\u05a7", "name": "DARGA", "color": "forestgreen", "heb": "דַּרְגָּ֧א", "examples": [] },
+{ "char": "\u05a9", "name": "TELISHA-QETANA", "color": "lightblue", "heb": "תְּלִישָׁא קְטַנָּה֩", "examples": [] },
+{ "char": "\u05ab", "name": "OLE", "color": "khaki", "heb": "עוֺלֶ֫ה", "examples": [] },
+{ "char": "\u05ac", "name": "ILUY", "color": "darkorange", "heb": "עִלּ֬וּי", "examples": [] },
+{ "char": "\u05bd", "name": "METEG", "color": "blue", "heb": "מֶֽתֶג", "examples": [] },
+    { "char": "\u05c3", "name": "SOFPASUK", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
 ];
 var tropnames = d3.map(TROP, function (t) { return t.name; });
 
