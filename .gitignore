@@ -1,2 +1,4 @@
 *.jmp
 .DS_Store
+ 
+*.bat
