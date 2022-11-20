@@ -73,7 +73,7 @@ const TROP = [
 { "char": "\u05ab", "name": "OLE", "color": "khaki", "heb": "עוֺלֶ֫ה", "examples": [] },
 { "char": "\u05ac", "name": "ILUY", "color": "darkorange", "heb": "עִלּ֬וּי", "examples": [] },
 { "char": "\u05bd", "name": "METEG", "color": "blue", "heb": "מֶֽתֶג", "examples": [] },
-{ "char": "\u05c0", "name": "LEGARMEH", "color": "black", "heb": "לְגַרְמֵהּ׀", "examples": [] },
+{ "char": "\u05c0", "name": "PASEQ", "color": "black", "heb": "פָּסֵק׀", "examples": [] },
 { "char": "\u05c3", "name": "SOFPASUK", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
 ];
 var tropnames = d3.map(TROP, function (t) { return t.name; });
@@ -627,6 +627,7 @@ function graphclick(d) {
 
     var textlist = [];
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
+    // to change to hatanch json api
     d3.jsonp("//www.sefaria.org/api/texts/" + linkformat(d.key) + "?lang=he&commentary=0&context=0&callback={callback}", function (r) {
         textlist = d3.map(r.he.map(function (t, p) { return { 'pasuk': p + 1, 'text': t }; }), function (p) { return p.pasuk; });
         d3.select("#in").html('<table id= "indetails"></div>');
