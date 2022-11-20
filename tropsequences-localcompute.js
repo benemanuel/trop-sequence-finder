@@ -51,7 +51,7 @@ var depthsums = d3.map([], function (s) { return s.depth; });
 var probformat = d3.format(".1%");
 var countformat = d3.format(",");
 const TROP = [
-    { "char": "\u0591", "name": "ETNAHTA", "color": "red", "heb": "אֶתְנַחְתָּ֑א", "examples": [] },
+{ "char": "\u0591", "name": "ETNAHTA", "color": "red", "heb": "אֶתְנַחְתָּ֑א", "examples": [] },
 { "char": "\u0592", "name": "SEGOL", "color": "hotpink", "heb": "סְגוֺלְתָּא֒", "examples": [] },
 { "char": "\u0593", "name": "SHALSHELET", "color": "goldenrod", "heb": "שַׁלְשֶׁ֓לֶת", "examples": [] },
 { "char": "\u0594", "name": "ZAQEF-QATAN", "color": "gray", "heb": "זָקֵף קָטֹ֔ן", "examples": [] },
@@ -73,7 +73,8 @@ const TROP = [
 { "char": "\u05ab", "name": "OLE", "color": "khaki", "heb": "עוֺלֶ֫ה", "examples": [] },
 { "char": "\u05ac", "name": "ILUY", "color": "darkorange", "heb": "עִלּ֬וּי", "examples": [] },
 { "char": "\u05bd", "name": "METEG", "color": "blue", "heb": "מֶֽתֶג", "examples": [] },
-    { "char": "\u05c3", "name": "SOFPASUK", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
+{ "char": "\u05c0", "name": "LEGARMEH", "color": "black", "heb": "לְגַרְמֵהּ׀", "examples": [] },
+{ "char": "\u05c3", "name": "SOFPASUK", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
 ];
 var tropnames = d3.map(TROP, function (t) { return t.name; });
 
