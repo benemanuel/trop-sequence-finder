@@ -628,6 +628,7 @@ function graphclick(d) {
     var textlist = [];
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
     // to change to hatanch json api
+	echo PHP_EOL . "<p debug='" . d.key." # ".r . "'></p>";
     d3.jsonp("//www.sefaria.org/api/texts/" + linkformat(d.key) + "?lang=he&commentary=0&context=0&callback={callback}", function (r) {
         textlist = d3.map(r.he.map(function (t, p) { return { 'pasuk': p + 1, 'text': t }; }), function (p) { return p.pasuk; });
         d3.select("#in").html('<table id= "indetails"></div>');
