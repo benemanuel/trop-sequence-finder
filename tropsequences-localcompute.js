@@ -585,7 +585,7 @@ function graphclick(d) {
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
     // to change to hatanch json api
 	//www.sefaria.org/api/texts/key=Psalms.117?lang=he&commentary=0&context=0
-    d3.jsonp("127.0.0.1:3000" + linkformat(d.key) + "&callback={callback}", function (r) {
+    d3.jsonp("//tanach.geulah.org.il/verse/?cit=" + linkformat(d.key) + "&callback={callback}", function (r) {
         textlist = d3.map(r.he.map(function (t, p) { return { 'pasuk': p + 1, 'text': t }; }), function (p) { return p.pasuk; });
         d3.select("#in").html('<table id= "indetails"></div>');
         d3.select("#not-in").html('<table id= "outdetails"></div>');
@@ -603,7 +603,7 @@ var locationformat = function (t) {
 
     var sefer;
     if (tanakhparts == "tanach") {
-       if (split[0] == "﻿Genesis") sefer = "בראשית"; 
+       if (split[0] == "Genesis") sefer = "בראשית"; 
 if (split[0] == "Exodus") sefer = "שמות"; 
 if (split[0] == "Leviticus") sefer = "ויקרא"; 
 if (split[0] == "Numbers") sefer = "במדבר"; 
