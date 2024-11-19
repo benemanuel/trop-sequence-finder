@@ -885,6 +885,52 @@ var locationformat = function(t) {
     return sefer + " " + split[1];
 };
 
+var linkformat = function (t) {
+    var split = t.split(",");
+	   var sefer;
+    if (tanakhparts == "tanach") {
+        if (split[0] == "Genesis") sefer = "Gen";
+        else if (split[0] == "Exodus") sefer = "Ex";
+        else if (split[0] == "Leviticus") sefer = "Lev";
+        else if (split[0] == "Numbers") sefer = "Num";
+        else if (split[0] == "Deuteronomy") sefer = "Deut";
+        else if (split[0] == "Joshua") sefer = "Josh";
+        else if (split[0] == "Judges") sefer = "Judg";
+        else if (split[0] == "Ruth") sefer = "Ruth";
+        else if (split[0] == "1Samuel") sefer = "1Sam";
+        else if (split[0] == "2Samuel") sefer = "2Sam";
+        else if (split[0] == "1Kings") sefer = "1Kings";
+        else if (split[0] == "2Kings") sefer = "2Kings";
+        else if (split[0] == "1Chronicles") sefer = "1Chr";
+        else if (split[0] == "2Chronicles") sefer = "2Chr";
+        else if (split[0] == "Ezra") sefer = "Ezra";
+        else if (split[0] == "Nehemiah") sefer = "Neh";
+        else if (split[0] == "Esther") sefer = "Esth";
+        else if (split[0] == "Job") sefer = "Job";
+        else if (split[0] == "Psalms") sefer = "Ps";
+        else if (split[0] == "Proverbs") sefer = "Prov";
+        else if (split[0] == "Ecclesiastes") sefer = "Eccl";
+        else if (split[0] == "Songofsongs") sefer = "Song";
+        else if (split[0] == "Isaiah") sefer = "Isa";
+        else if (split[0] == "Jeremiah") sefer = "Jer";
+        else if (split[0] == "Lamentations") sefer = "Lam";
+        else if (split[0] == "Ezekiel") sefer = "Ezek";
+        else if (split[0] == "Daniel") sefer = "Dan";
+        else if (split[0] == "Hosea") sefer = "Hos";
+        else if (split[0] == "Joel") sefer = "Joel";
+        else if (split[0] == "Amos") sefer = "Am";
+        else if (split[0] == "Obadiah") sefer = "Ob";
+        else if (split[0] == "Jonah") sefer = "Jon";
+        else if (split[0] == "Micah") sefer = "Mic";
+        else if (split[0] == "Nahum") sefer = "Nah";
+        else if (split[0] == "Habakkuk") sefer = "Hab";
+        else if (split[0] == "Zephaniah") sefer = "Zeph";
+        else if (split[0] == "Haggai") sefer = "Hag";
+        else if (split[0] == "Zechariah") sefer = "Zech";
+        else if (split[0] == "Malachi") sefer = "Mal";
+    }
+    return sefer + ":" + split[1];
+};
 
 d3.select(window).on("resize", function() {
     d3.select("#vizcontainer")
