@@ -841,7 +841,7 @@ var locationformat = function(t) {
     var split = t.split(",");
 
     var sefer;
-    if (tanakhparts == "tanach") {
+    if (tanakhparts == "torah") {
         if (split[0] == "Genesis") sefer = "בראשית";
         if (split[0] == "Exodus") sefer = "שמות";
         if (split[0] == "Leviticus") sefer = "ויקרא";
@@ -887,8 +887,8 @@ var locationformat = function(t) {
 
 var linkformat = function (t) {
     var split = t.split(",");
-	   var sefer;
-    if (tanakhparts == "tanach") {
+    var sefer;
+    if (tanakhparts == "torah") {
         if (split[0] == "Genesis") sefer = "Gen";
         else if (split[0] == "Exodus") sefer = "Ex";
         else if (split[0] == "Leviticus") sefer = "Lev";
