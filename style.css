@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'SBL Hebrew';
     src: local('SBL Hebrew'), local('SBLHebrew'),
-        url('fonts/SBLHebrew.woff2') format('woff2'),
-        url('fonts/SBLHebrew.woff') format('woff');
+        url('SBLHebrew.woff2') format('woff2'),
+        url('SBLHebrew.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: fallback;

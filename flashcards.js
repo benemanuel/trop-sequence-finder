@@ -20,7 +20,7 @@ const TROP = [
     { "char": "\u05a7", "name": "darga", "color": "darkgoldenrod", "heb": "דַּרְגָּ֧א", "examples": ["בּ֧רָא", "בָּרָ֧א"] },
     { "char": "\u059b", "name": "tevir", "color": "darkgreen", "heb": "תְּבִ֛יר", "examples": ["בָּרָ֛א", "בָּ֛רָא"] },
     { "char": "\u059a", "name": "yetiv", "color": "darksalmon", "heb": "יְ֚תִיב", "examples": ["בָּ֚רָא"] },
-    { "char": "\u05c3", "name": "sofpasuk", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] },
+    { "char": "\u05c3", "name": "sofpasuk", "color": "indianred", "heb": "סוֹף פָּסֽוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] },
     // { "char": "\u0593", "name": "shalshelet", "color": "dodgerblue", "heb": "שַׁלְשֶׁ֓לֶת", "examples": [] },
     // { "char": "\u05a6", "name": "merkhakfula", "color": "dodgerblue", "heb": "מֵרְכָא־כְפוּלָ֦ה", "examples": [] },
     // { "char": "\u059f", "name": "karnepara", "color": "dodgerblue", "heb": "קַרְנֵי פָרָ֟ה", "examples": [] },
