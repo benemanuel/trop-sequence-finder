@@ -1,4 +1,4 @@
-var dataFile = "tropstrings.json";
+var dataFile = "tropstrings-torah.json";
 var tanakhparts = "torah";
 
 // https://stackoverflow.com/a/3855394
