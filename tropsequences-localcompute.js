@@ -2,7 +2,7 @@ var dataFile = "tropstrings.json";
 var tanakhparts = "torah";
 
 // https://stackoverflow.com/a/3855394
-var qs = (function (a) {
+var qs = (function(a) {
     if (a == "") return {};
     var b = {};
     for (var i = 0; i < a.length; ++i) {
@@ -31,7 +31,9 @@ var x = d3.scale.linear()
     .range([width, 0]);
 
 d3.select("#vizcontainer")
-    .style({ "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px" });
+    .style({
+        "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px"
+    });
 
 var svg = d3.select("#vizcontainer")
     .append("svg")
@@ -41,37 +43,184 @@ var svg = d3.select("#vizcontainer")
 
 var nodes = [];
 
-var depthsums = d3.map([], function (s) { return s.depth; });
+var depthsums = d3.map([], function(s) {
+    return s.depth;
+});
 
 var probformat = d3.format(".1%");
 var countformat = d3.format(",");
-const TROP = [
-{ "char": "\u0591", "name": "ETNAHTA", "color": "red", "heb": "אֶתְנַחְתָּ֑א", "examples": [] },
-{ "char": "\u0592", "name": "SEGOL", "color": "hotpink", "heb": "סְגוֺלְתָּא֒", "examples": [] },
-{ "char": "\u0593", "name": "SHALSHELET", "color": "goldenrod", "heb": "שַׁלְשֶׁ֓לֶת", "examples": [] },
-{ "char": "\u0594", "name": "ZAQEF-QATAN", "color": "gray", "heb": "זָקֵף קָטֹ֔ן", "examples": [] },
-{ "char": "\u0595", "name": "ZAQEF-GADOL", "color": "lightgray", "heb": "זָקֵף גָּד֕וֹל", "examples": [] },
-{ "char": "\u0596", "name": "TIPEHA", "color": "magenta", "heb": "טִפְּחָ֖א", "examples": [] },
-{ "char": "\u0597", "name": "REVIA", "color": "brown", "heb": "רְבִ֗יעַ", "examples": [] },
-{ "char": "\u0598", "name": "ZARQA", "color": "greenyellow", "heb": "זַרְקָא֮", "examples": [] },
-{ "char": "\u0599", "name": "PASHTA", "color": "blueviolet", "heb": "פַּשְׁטָא֙ ", "examples": [] },
-{ "char": "\u059a", "name": "YETIV", "color": "yellow", "heb": "יְ֚תִיב", "examples": [] },
-{ "char": "\u059b", "name": "TEVIR", "color": "green", "heb": "תְּבִ֛יר", "examples": [] },
-{ "char": "\u059c", "name": "GERESH", "color": "steelblue", "heb": "גֵּ֜רֵשׁ", "examples": [] },
-{ "char": "\u05a0", "name": "TELISHA-GEDOLA", "color": "indianred", "heb": "תְּ֠לִישָא גְדוֹלָה", "examples": [] },
-{ "char": "\u05a1", "name": "PAZER", "color": "purplish pink", "heb": "פָּזֵ֡ר", "examples": [] },
-{ "char": "\u05a2", "name": "YERAH-BEN-YOMO", "color": "cyan", "heb": "יָרֵחַ בֶּן יוֹמ֪וֹ", "examples": [] },
-{ "char": "\u05a3", "name": "MUNAH", "color": "orange", "heb": "מֻנַּ֣ח", "examples": [] },
-{ "char": "\u05a5", "name": "MERKHA", "color": "violet", "heb": "מֵרְכָ֥א", "examples": [] },
-{ "char": "\u05a7", "name": "DARGA", "color": "forestgreen", "heb": "דַּרְגָּ֧א", "examples": [] },
-{ "char": "\u05a9", "name": "TELISHA-QETANA", "color": "lightblue", "heb": "תְּלִישָׁא קְטַנָּה֩", "examples": [] },
-{ "char": "\u05ab", "name": "OLE", "color": "khaki", "heb": "עוֺלֶ֫ה", "examples": [] },
-{ "char": "\u05ac", "name": "ILUY", "color": "darkorange", "heb": "עִלּ֬וּי", "examples": [] },
-{ "char": "\u05bd", "name": "METEG", "color": "blue", "heb": "מֶֽתֶג", "examples": [] },
-{ "char": "\u05c0", "name": "PASEQ", "color": "black", "heb": "פָּסֵק׀", "examples": [] },
-{ "char": "\u05c3", "name": "SOFPASUK", "color": "indianred", "heb": "סוֹף פָּסוּק׃", "examples": ["בָּרָֽא׃", "בָּרָֽא׃"] }
+const TROP = [{
+        "char": "\u0591",
+        "name": "ETNAHTA",
+        "color": "red",
+        "heb": "אֶתְנַחְתָּ֑א",
+        "examples": []
+    },
+    {
+        "char": "\u0592",
+        "name": "SEGOL",
+        "color": "hotpink",
+        "heb": "סְגוֺלְתָּא֒",
+        "examples": []
+    },
+    {
+        "char": "\u0593",
+        "name": "SHALSHELET",
+        "color": "goldenrod",
+        "heb": "שַׁלְשֶׁ֓לֶת",
+        "examples": []
+    },
+    {
+        "char": "\u0594",
+        "name": "ZAQEF-QATAN",
+        "color": "gray",
+        "heb": "זָקֵף קָטֹ֔ן",
+        "examples": []
+    },
+    {
+        "char": "\u0595",
+        "name": "ZAQEF-GADOL",
+        "color": "lightgray",
+        "heb": "זָקֵף גָּד֕וֹל",
+        "examples": []
+    },
+    {
+        "char": "\u0596",
+        "name": "TIPEHA",
+        "color": "magenta",
+        "heb": "טִפְּחָ֖א",
+        "examples": []
+    },
+    {
+        "char": "\u0597",
+        "name": "REVIA",
+        "color": "brown",
+        "heb": "רְבִ֗יעַ",
+        "examples": []
+    },
+    {
+        "char": "\u0598",
+        "name": "ZARQA",
+        "color": "greenyellow",
+        "heb": "זַרְקָא֮",
+        "examples": []
+    },
+    {
+        "char": "\u0599",
+        "name": "PASHTA",
+        "color": "blueviolet",
+        "heb": "פַּשְׁטָא֙ ",
+        "examples": []
+    },
+    {
+        "char": "\u059a",
+        "name": "YETIV",
+        "color": "yellow",
+        "heb": "יְ֚תִיב",
+        "examples": []
+    },
+    {
+        "char": "\u059b",
+        "name": "TEVIR",
+        "color": "green",
+        "heb": "תְּבִ֛יר",
+        "examples": []
+    },
+    {
+        "char": "\u059c",
+        "name": "GERESH",
+        "color": "steelblue",
+        "heb": "גֵּ֜רֵשׁ",
+        "examples": []
+    },
+    {
+        "char": "\u05a0",
+        "name": "TELISHA-GEDOLA",
+        "color": "indianred",
+        "heb": "תְּ֠לִישָא גְדוֹלָה",
+        "examples": []
+    },
+    {
+        "char": "\u05a1",
+        "name": "PAZER",
+        "color": "purplish pink",
+        "heb": "פָּזֵ֡ר",
+        "examples": []
+    },
+    {
+        "char": "\u05a2",
+        "name": "YERAH-BEN-YOMO",
+        "color": "cyan",
+        "heb": "יָרֵחַ בֶּן יוֹמ֪וֹ",
+        "examples": []
+    },
+    {
+        "char": "\u05a3",
+        "name": "MUNAH",
+        "color": "orange",
+        "heb": "מֻנַּ֣ח",
+        "examples": []
+    },
+    {
+        "char": "\u05a5",
+        "name": "MERKHA",
+        "color": "violet",
+        "heb": "מֵרְכָ֥א",
+        "examples": []
+    },
+    {
+        "char": "\u05a7",
+        "name": "DARGA",
+        "color": "forestgreen",
+        "heb": "דַּרְגָּ֧א",
+        "examples": []
+    },
+    {
+        "char": "\u05a9",
+        "name": "TELISHA-QETANA",
+        "color": "lightblue",
+        "heb": "תְּלִישָׁא קְטַנָּה֩",
+        "examples": []
+    },
+    {
+        "char": "\u05ab",
+        "name": "OLE",
+        "color": "khaki",
+        "heb": "עוֺלֶ֫ה",
+        "examples": []
+    },
+    {
+        "char": "\u05ac",
+        "name": "ILUY",
+        "color": "darkorange",
+        "heb": "עִלּ֬וּי",
+        "examples": []
+    },
+    {
+        "char": "\u05bd",
+        "name": "METEG",
+        "color": "blue",
+        "heb": "מֶֽתֶג",
+        "examples": []
+    },
+    {
+        "char": "\u05c0",
+        "name": "PASEQ",
+        "color": "black",
+        "heb": "פָּסֵק׀",
+        "examples": []
+    },
+    {
+        "char": "\u05c3",
+        "name": "SOFPASUK",
+        "color": "indianred",
+        "heb": "סוֹף פָּסוּק׃",
+        "examples": ["בָּרָֽא׃", "בָּרָֽא׃"]
+    }
 ];
-var tropnames = d3.map(TROP, function (t) { return t.name; });
+var tropnames = d3.map(TROP, function(t) {
+    return t.name;
+});
 
 var tropstrings;
 var disaggregated;
@@ -82,23 +231,33 @@ const settings = {
 };
 
 d3.selectAll(".searchFrom")
-    .datum(function () { return this.dataset; })
+    .datum(function() {
+        return this.dataset;
+    })
     .on("change", switchSearchFrom);
 
 function switchSearchFrom(d) {
     settings.frombeginning = d.value == "beginning" ? true : false;
     nodes = [];
-    depthsums = d3.map([], function (s) { return s.depth; }); // I could probably just kill depthsums entirely. doubt i'm getting much performance gain from caching like this
+    depthsums = d3.map([], function(s) {
+        return s.depth;
+    }); // I could probably just kill depthsums entirely. doubt i'm getting much performance gain from caching like this
     init(tropstrings);
 
     var depth = 0;
-    var oldQuery = ancestrynames.map(function (a) { return a; }); // deep copy
-    var toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
+    var oldQuery = ancestrynames.map(function(a) {
+        return a;
+    }); // deep copy
+    var toclick = nodes.filter(function(d) {
+        return d.depth == depth && d.name == oldQuery[depth];
+    });
 
     while (toclick.length > 0) {
         nodeclick(toclick[0]);
         depth = depth + 1;
-        toclick = nodes.filter(function (d) { return d.depth == depth && d.name == oldQuery[depth]; });
+        toclick = nodes.filter(function(d) {
+            return d.depth == depth && d.name == oldQuery[depth];
+        });
     }
 }
 
@@ -108,7 +267,9 @@ function switchDisplayWordSetting(d) {
 }
 
 d3.selectAll(".displaySettingWord")
-    .datum(function () { return this.dataset; })
+    .datum(function() {
+        return this.dataset;
+    })
     .on("change", switchDisplayWordSetting);
 
 function switchDisplayColorSetting(d) {
@@ -117,7 +278,9 @@ function switchDisplayColorSetting(d) {
 }
 
 d3.selectAll(".displaySettingColor")
-    .datum(function () { return this.dataset; })
+    .datum(function() {
+        return this.dataset;
+    })
     .on("change", switchDisplayColorSetting);
 
 function switchYvalue(d) {
@@ -125,29 +288,44 @@ function switchYvalue(d) {
     graph();
 }
 d3.selectAll(".graphValues")
-    .datum(function () { return this.dataset; })
+    .datum(function() {
+        return this.dataset;
+    })
     .on("change", switchYvalue);
 
-var frombeginningprefix = function () { return settings.frombeginning ? "^" : ""; };
+var frombeginningprefix = function() {
+    return settings.frombeginning ? "^" : "";
+};
 
 d3.json(dataFile, init);
+
 function init(root) {
     tropstrings = root;
 
     // go through and read in the root of each tree
-    tropnames.forEach(function (t) {
-        var node = { ...tropnames.get(t) };
+    tropnames.forEach(function(t) {
+        var node = {
+            ...tropnames.get(t)
+        };
         var exp = RegExp(frombeginningprefix() + node.char, "g");
-        node.count = d3.sum(tropstrings.filter(function (d) { return d.trop.search(exp) > -1; }).map(function (d) { return d.trop.match(exp).length; }));
+        node.count = d3.sum(tropstrings.filter(function(d) {
+            return d.trop.search(exp) > -1;
+        }).map(function(d) {
+            return d.trop.match(exp).length;
+        }));
 
         if (node.count > 0) nodes = nodes.concat(tree.nodes(node)); // this needs to go inside the loop because each trop parent is a root
     });
 
-    nodes.sort(function (a, b) { return b.count - a.count; });
+    nodes.sort(function(a, b) {
+        return b.count - a.count;
+    });
 
-    var depthsum = depthsums.get(0) ? depthsums.get(0) : depthsums.set(0, d3.sum(nodes.map(function (d) { return d.count; })));
+    var depthsum = depthsums.get(0) ? depthsums.get(0) : depthsums.set(0, d3.sum(nodes.map(function(d) {
+        return d.count;
+    })));
 
-    nodes.forEach(function (d, i) {
+    nodes.forEach(function(d, i) {
         // don't use the collapse() function here because we don't want need to recurse within a forEach
         // todo: this shouldn't be necessary now because we haven't defined any children
         if (d.children) {
@@ -176,22 +354,23 @@ function init(root) {
 
 }
 
-var pos = function (d, i) {
+var pos = function(d, i) {
     return "translate(" + d.x + ", " + d.y + ")";
 };
 
-var oldypos = function (d) {
+var oldypos = function(d) {
     if (this.attributes.getNamedItem("transform")) {
         var t = this.attributes.getNamedItem("transform").nodeValue;
         var oldy = t.substring(t.indexOf(",") + 1, t.indexOf(")"));
-    }
-    else oldy = d.y;
+    } else oldy = d.y;
     return "translate(" + d.x + ", " + oldy + ")";
 };
 
 function update() {
 
-    var node = svg.selectAll("g.node").data(nodes, function (d) { return d.name + "," + d.depth; });
+    var node = svg.selectAll("g.node").data(nodes, function(d) {
+        return d.name + "," + d.depth;
+    });
 
     var nodeenter = node.enter()
         .append("g")
@@ -212,13 +391,17 @@ function update() {
         .attr("class", "tropchar")
         .attr("dx", 50)
         .attr("dy", tree.nodeSize()[1] / 2 + 30)
-        .text(function (d) { return " " + d.char; });
+        .text(function(d) {
+            return " " + d.char;
+        });
 
 
     nodeenter.append("text")
         .attr("class", "name")
         .attr("dy", tree.nodeSize()[1] / 2 + 6)
-        .text(function (d) { return d.heb ? d.heb : d.name; })
+        .text(function(d) {
+            return d.heb ? d.heb : d.name;
+        })
         .attr("dx", tree.nodeSize()[0] - 5);
 
     nodeenter.append("text")
@@ -248,9 +431,14 @@ function update() {
         .attr("transform", pos);
 
     node.select("text.name")
-        .style("fill", function (d) { console.log("attr color"); return settings.displayColored ? d.color : "black"; })
+        .style("fill", function(d) {
+            console.log("attr color");
+            return settings.displayColored ? d.color : "black";
+        })
 
-    node.classed("disabled", function (d) { return d.disabled; });
+    node.classed("disabled", function(d) {
+        return d.disabled;
+    });
 
     node.exit().remove();
 }
@@ -266,8 +454,7 @@ function ancestry(n, s) {
     if (n.parent != undefined) {
         s += "," + n.parent.name;
         return ancestry(n.parent, s);
-    }
-    else return s;
+    } else return s;
 }
 
 let searchSeq = [];
@@ -284,6 +471,7 @@ function clearClick() {
     searchSeq = [];
     applySearchSeq();
 }
+
 function backspaceClick() {
     searchSeq = searchSeq.slice(0, -1);
     applySearchSeq();
@@ -305,8 +493,7 @@ function applySearchSeq() {
             if (settings.displayExample && trop.examples.length) {
                 const example = trop.examples[Math.floor(Math.random() * trop.examples.length)];
                 return [trop, example];
-            }
-            else {
+            } else {
                 return [trop, trop.heb];
             }
         })
@@ -340,7 +527,7 @@ function applySearchSeq() {
     // do graph location data
     disaggregated = [];
     var exp = RegExp(frombeginningprefix() + searchString, "g");
-    tropstrings.forEach(function (p) {
+    tropstrings.forEach(function(p) {
         var pasukobj = new Object();
         pasukobj.sefer = p.sefer;
         pasukobj.perek = p.perek;
@@ -356,8 +543,7 @@ function applySearchSeq() {
     if (searchSeq.length !== 0) {
         const occurenceText = totalOccurrences === 1 ? "1 occurrence." : `${totalOccurrences} occurrences.`;
         $("#occurrences").text(occurenceText);
-    }
-    else {
+    } else {
         $("#occurrences").text("");
     }
 
@@ -370,7 +556,12 @@ function collapse(d) {
     d.children = null;
 }
 
-var graphMargin = { left: 20, right: 66, top: 55, bottom: 18 };
+var graphMargin = {
+    left: 20,
+    right: 66,
+    top: 55,
+    bottom: 18
+};
 var graphWidth = window.innerWidth - 20;
 
 var graphsvg = d3.select("#graphcontainer")
@@ -407,26 +598,43 @@ var tooltipg = graphsvg.append("g")
 
 var byperekdata;
 var yValue = "norm";
+
 function graph() {
     var data = aggregate(disaggregated, "perek"); // aggregate by perek
-    var bar = barg.selectAll("rect.bar").data(data, function (d) { return d.key; });
+    var bar = barg.selectAll("rect.bar").data(data, function(d) {
+        return d.key;
+    });
 
-    graphy.domain([0, d3.max(data.map(function (d) { return d.values[yValue]; }))]);
+    graphy.domain([0, d3.max(data.map(function(d) {
+        return d.values[yValue];
+    }))]);
 
     var barenter = bar.enter()
         .append("rect")
         .attr("class", "bar")
         .attr("width", barwidth)
-        .attr("x", function (d) { return graphx(d.key); })
-        .attr("y", function (d) { return graphy(d.values[yValue]); })
-        .attr("height", function (d) { return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); })
+        .attr("x", function(d) {
+            return graphx(d.key);
+        })
+        .attr("y", function(d) {
+            return graphy(d.values[yValue]);
+        })
+        .attr("height", function(d) {
+            return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]);
+        })
         .on("mouseover", dotooltip)
-        .on("mouseout", function (d) { tooltipg.selectAll("g.mytooltip").remove(); })
+        .on("mouseout", function(d) {
+            tooltipg.selectAll("g.mytooltip").remove();
+        })
         .on("click", graphclick);
 
     bar.transition().duration(250)
-        .attr("y", function (d) { return graphy(d.values[yValue]); })
-        .attr("height", function (d) { return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]); });
+        .attr("y", function(d) {
+            return graphy(d.values[yValue]);
+        })
+        .attr("height", function(d) {
+            return (GRAPH_HEIGHT - graphMargin.bottom - graphMargin.top) - graphy(d.values[yValue]);
+        });
 
     bar.exit().transition().duration(250)
         .attr("height", 1)
@@ -434,18 +642,21 @@ function graph() {
 }
 
 var perekindex;
+
 function initgraph() {
-    perekindex = d3.set(tropstrings.map(function (p) { return p.sefer + "," + p.perek; })).values();
+    perekindex = d3.set(tropstrings.map(function(p) {
+        return p.sefer + "," + p.perek;
+    })).values();
     perekindex.sort(sortperekindex);
 
     graphx.domain(perekindex);
     barwidth = graphx.rangeBand();
     xAxis
         .scale(graphx)
-        .tickValues(perekindex.filter(function (p) {
+        .tickValues(perekindex.filter(function(p) {
             if (tanakhparts == "torah") return p.endsWith(",1");
         }))
-        .tickFormat(function (t) {
+        .tickFormat(function(t) {
             if (tanakhparts == "torah") {
                 if (t == "Genesis,1") return "בראשית";
                 else if (t == "Exodus,1") return "שמות";
@@ -458,12 +669,18 @@ function initgraph() {
 
     xaxisg.call(xAxis);
 
-    disaggregated = perekindex.map(function (i) {
+    disaggregated = perekindex.map(function(i) {
         var split = i.split(",");
         var sefer = split[0];
         var perek = split[1];
         var pasuk = 1; // doesn't matter how many there are, but it's gonna try to agg, so we should have it
-        return { "sefer": sefer, "perek": perek, "pasuk": pasuk, numtrop: 1, count: 0 };
+        return {
+            "sefer": sefer,
+            "perek": perek,
+            "pasuk": pasuk,
+            numtrop: 1,
+            count: 0
+        };
     });
     graph();
 }
@@ -472,11 +689,20 @@ function aggregate(data, by) {
     var aggregated;
     if (by == "perek") {
         aggregated = d3.nest()
-            .key(function (d) { return d.sefer + "," + d.perek; })
-            .rollup(function (l) {
-                var countsum = d3.sum(l, function (d) { return d.count; });
+            .key(function(d) {
+                return d.sefer + "," + d.perek;
+            })
+            .rollup(function(l) {
+                var countsum = d3.sum(l, function(d) {
+                    return d.count;
+                });
                 var normdenominator = l.length;
-                return { "sefer": l[0].sefer, "perek": l[0].perek, "count": countsum, "norm": countsum / normdenominator };
+                return {
+                    "sefer": l[0].sefer,
+                    "perek": l[0].perek,
+                    "count": countsum,
+                    "norm": countsum / normdenominator
+                };
             })
             .entries(disaggregated);
     }
@@ -487,47 +713,46 @@ function aggregate(data, by) {
 function sortperekindex(a, b) {
     var order = [];
     if (tanakhparts == "torah") {
-        order = ["Genesis", 
-"Exodus", 
-"Leviticus", 
-"Numbers", 
-"Deuteronomy", 
-"Joshua", 
-"Judges", 
-"1Samuel", 
-"2Samuel", 
-"1Kings", 
-"2Kings", 
-"Isaiah", 
-"Jeremiah", 
-"Ezekiel", 
-"Hosea", 
-"Joel", 
-"Amos", 
-"Obadiah", 
-"Jonah", 
-"Micah", 
-"Nahum", 
-"Habakkuk", 
-"Zephaniah", 
-"Haggai", 
-"Zechariah", 
-"Malachi", 
-"Psalms", 
-"Proverbs", 
-"Job", 
-"Songofsongs", 
-"Ruth", 
-"Lamentations", 
-"Ecclesiastes", 
-"Esther", 
-"Daniel", 
-"Ezra", 
-"Nehemiah", 
-"1Chronicles", 
-"2Chronicles", 
-];  
-    }
+        order = ["Genesis",
+            "Exodus",
+            "Leviticus",
+            "Numbers",
+            "Deuteronomy",
+            "Joshua",
+            "Judges",
+            "1Samuel",
+            "2Samuel",
+            "1Kings",
+            "2Kings",
+            "Isaiah",
+            "Jeremiah",
+            "Ezekiel",
+            "Hosea",
+            "Joel",
+            "Amos",
+            "Obadiah",
+            "Jonah",
+            "Micah",
+            "Nahum",
+            "Habakkuk",
+            "Zephaniah",
+            "Haggai",
+            "Zechariah",
+            "Malachi",
+            "Psalms",
+            "Proverbs",
+            "Job",
+            "Songofsongs",
+            "Ruth",
+            "Lamentations",
+            "Ecclesiastes",
+            "Esther",
+            "Daniel",
+            "Ezra",
+            "Nehemiah",
+            "1Chronicles",
+            "2Chronicles",
+        ];
     }
     var aSplit = a.split(",");
     var aSefer = order.indexOf(aSplit[0]);
@@ -542,6 +767,7 @@ function sortperekindex(a, b) {
 }
 
 var normformat = d3.format(".2f");
+
 function dotooltip(d) {
     tooltipg.selectAll("g.mytooltip").remove();
     var tooltip = tooltipg.append("g")
@@ -573,85 +799,98 @@ function dotooltip(d) {
 }
 
 function graphclick(d) {
-    var pasuklist = disaggregated.filter(function (p) { return p.sefer == d.values.sefer && p.perek == d.values.perek && p.count > 0; });
-    var outpasuklist = disaggregated.filter(function (p) { return p.sefer == d.values.sefer && p.perek == d.values.perek && p.count == 0; });
+    var pasuklist = disaggregated.filter(function(p) {
+        return p.sefer == d.values.sefer && p.perek == d.values.perek && p.count > 0;
+    });
+    var outpasuklist = disaggregated.filter(function(p) {
+        return p.sefer == d.values.sefer && p.perek == d.values.perek && p.count == 0;
+    });
 
     d3.select("#detailsModalLabel").html(locationformat(d.key));
-    d3.select("#currentSearch").html(ancestrynames.map(function (d) { return tropnames.get(d).heb; }).join(" "));
+    d3.select("#currentSearch").html(ancestrynames.map(function(d) {
+        return tropnames.get(d).heb;
+    }).join(" "));
     d3.select("#detailsContainer").html('<div class= "progress"><div class= "progress-bar progress-bar-striped active" role= "progressbar" style= "width: 100%"></div></div>');
     $("#detailsModal").modal("show");
 
     var textlist = [];
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
     // to change to hatanch json api
-	//www.sefaria.org/api/texts/key=Psalms.117?lang=he&commentary=0&context=0
-    d3.jsonp("//tanach.geulah.org.il/verse/?cit=" + linkformat(d.key) + "&callback={callback}", function (r) {
-        textlist = d3.map(r.he.map(function (t, p) { return { 'pasuk': p + 1, 'text': t }; }), function (p) { return p.pasuk; });
+    //www.sefaria.org/api/texts/key=Psalms.117?lang=he&commentary=0&context=0
+    d3.jsonp("//tanach.geulah.org.il/verse/?cit=" + linkformat(d.key) + "&callback={callback}", function(r) {
+        textlist = d3.map(r.he.map(function(t, p) {
+            return {
+                'pasuk': p + 1,
+                'text': t
+            };
+        }), function(p) {
+            return p.pasuk;
+        });
         d3.select("#in").html('<table id= "indetails"></div>');
         d3.select("#not-in").html('<table id= "outdetails"></div>');
-        pasuklist.forEach(function (p) {
+        pasuklist.forEach(function(p) {
             d3.select("#indetails").append("tr").html("<td class='pasuknum'>" + p.pasuk + "</td><td class='pasuktext'>" + textlist.get(p.pasuk).text + "</td>"); //p.sefer + " " + p.perek + " " + p.pasuk);
         });
-        outpasuklist.forEach(function (p) {
+        outpasuklist.forEach(function(p) {
             d3.select("#outdetails").append("tr").html("<td class='pasuknum'>" + p.pasuk + "</td><td class='pasuktext'>" + textlist.get(p.pasuk).text + "</td>");
         });
     });
 }
 
-var locationformat = function (t) {
+var locationformat = function(t) {
     var split = t.split(",");
 
     var sefer;
     if (tanakhparts == "tanach") {
-       if (split[0] == "Genesis") sefer = "בראשית"; 
-if (split[0] == "Exodus") sefer = "שמות"; 
-if (split[0] == "Leviticus") sefer = "ויקרא"; 
-if (split[0] == "Numbers") sefer = "במדבר"; 
-if (split[0] == "Deuteronomy") sefer = "דברים"; 
-if (split[0] == "Joshua") sefer = "יהושע"; 
-if (split[0] == "Judges") sefer = "שופטים"; 
-if (split[0] == "1Samuel") sefer = "שמואל א"; 
-if (split[0] == "2Samuel") sefer = "שמואל ב"; 
-if (split[0] == "1Kings") sefer = "מלאכים א"; 
-if (split[0] == "2Kings") sefer = "מלאכים ב"; 
-if (split[0] == "Isaiah") sefer = "ישעיהו"; 
-if (split[0] == "Jeremiah") sefer = "ירמיהו"; 
-if (split[0] == "Ezekiel") sefer = "יחזקאל"; 
-if (split[0] == "Hosea") sefer = "הושע"; 
-if (split[0] == "Joel") sefer = "יואל"; 
-if (split[0] == "Amos") sefer = "עמוס"; 
-if (split[0] == "Obadiah") sefer = "עובדיה"; 
-if (split[0] == "Jonah") sefer = "יונה"; 
-if (split[0] == "Micah") sefer = "מיכה"; 
-if (split[0] == "Nahum") sefer = "נחום"; 
-if (split[0] == "Habakkuk") sefer = "חבקוק"; 
-if (split[0] == "Zephaniah") sefer = "צפניה"; 
-if (split[0] == "Haggai") sefer = "חגי"; 
-if (split[0] == "Zechariah") sefer = "זכריה"; 
-if (split[0] == "Malachi") sefer = "מלאכי"; 
-if (split[0] == "Psalms") sefer = "תהילים"; 
-if (split[0] == "Proverbs") sefer = "משלי"; 
-if (split[0] == "Job") sefer = "איוב"; 
-if (split[0] == "Song of songs") sefer = "שיר השירים"; 
-if (split[0] == "Ruth") sefer = "רות"; 
-if (split[0] == "Lamentations") sefer = "איכה"; 
-if (split[0] == "Ecclesiastes") sefer = "קהלת"; 
-if (split[0] == "Esther") sefer = "אסתר"; 
-if (split[0] == "Daniel") sefer = "דניאל"; 
-if (split[0] == "Ezra") sefer = "עזרא"; 
-if (split[0] == "Nehemiah") sefer = "נחמיה"; 
-if (split[0] == "1Chronicles") sefer = "דברי הימים א"; 
-if (split[0] == "2Chronicles") sefer = "דברי הימים ב"; 
-
+        if (split[0] == "Genesis") sefer = "בראשית";
+        if (split[0] == "Exodus") sefer = "שמות";
+        if (split[0] == "Leviticus") sefer = "ויקרא";
+        if (split[0] == "Numbers") sefer = "במדבר";
+        if (split[0] == "Deuteronomy") sefer = "דברים";
+        if (split[0] == "Joshua") sefer = "יהושע";
+        if (split[0] == "Judges") sefer = "שופטים";
+        if (split[0] == "1Samuel") sefer = "שמואל א";
+        if (split[0] == "2Samuel") sefer = "שמואל ב";
+        if (split[0] == "1Kings") sefer = "מלאכים א";
+        if (split[0] == "2Kings") sefer = "מלאכים ב";
+        if (split[0] == "Isaiah") sefer = "ישעיהו";
+        if (split[0] == "Jeremiah") sefer = "ירמיהו";
+        if (split[0] == "Ezekiel") sefer = "יחזקאל";
+        if (split[0] == "Hosea") sefer = "הושע";
+        if (split[0] == "Joel") sefer = "יואל";
+        if (split[0] == "Amos") sefer = "עמוס";
+        if (split[0] == "Obadiah") sefer = "עובדיה";
+        if (split[0] == "Jonah") sefer = "יונה";
+        if (split[0] == "Micah") sefer = "מיכה";
+        if (split[0] == "Nahum") sefer = "נחום";
+        if (split[0] == "Habakkuk") sefer = "חבקוק";
+        if (split[0] == "Zephaniah") sefer = "צפניה";
+        if (split[0] == "Haggai") sefer = "חגי";
+        if (split[0] == "Zechariah") sefer = "זכריה";
+        if (split[0] == "Malachi") sefer = "מלאכי";
+        if (split[0] == "Psalms") sefer = "תהילים";
+        if (split[0] == "Proverbs") sefer = "משלי";
+        if (split[0] == "Job") sefer = "איוב";
+        if (split[0] == "Song of songs") sefer = "שיר השירים";
+        if (split[0] == "Ruth") sefer = "רות";
+        if (split[0] == "Lamentations") sefer = "איכה";
+        if (split[0] == "Ecclesiastes") sefer = "קהלת";
+        if (split[0] == "Esther") sefer = "אסתר";
+        if (split[0] == "Daniel") sefer = "דניאל";
+        if (split[0] == "Ezra") sefer = "עזרא";
+        if (split[0] == "Nehemiah") sefer = "נחמיה";
+        if (split[0] == "1Chronicles") sefer = "דברי הימים א";
+        if (split[0] == "2Chronicles") sefer = "דברי הימים ב";
     }
-
     return sefer + " " + split[1];
 };
 
 
-d3.select(window).on("resize", function () {
+d3.select(window).on("resize", function() {
     d3.select("#vizcontainer")
-        .style({ "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px" });
+        .style({
+            "height": (window.innerHeight - GRAPH_HEIGHT - 28) + "px"
+        });
 
     graphWidth = window.innerWidth - 20;
     graphsvg.attr("width", graphWidth);
@@ -661,19 +900,27 @@ d3.select(window).on("resize", function () {
     xaxisg.call(xAxis);
     barg.selectAll(".bar")
         .attr("width", barwidth)
-        .attr("x", function (d) { return graphx(d.key); });
+        .attr("x", function(d) {
+            return graphx(d.key);
+        });
 
     d3.select("#cog")
-        .style({ "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px" });
+        .style({
+            "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px"
+        });
 });
 
 
 d3.select("#cog")
-    .style({ "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px" });
+    .style({
+        "top": (window.innerHeight - GRAPH_HEIGHT - 48) + "px"
+    });
 
-$("#cog").click(function () { $("#tab-settings").tab("show"); });
+$("#cog").click(function() {
+    $("#tab-settings").tab("show");
+});
 
-$("button[role=tab]").click(function () {
+$("button[role=tab]").click(function() {
     $("button[role=tab]").removeClass("btn-primary");
     $(this).addClass("btn-primary");
 });
@@ -682,4 +929,6 @@ if (Cookies.get("firstload") != "no") {
     $("#prefs").modal("show");
 }
 
-Cookies.set("firstload", "no", { expires: 7 });
+Cookies.set("firstload", "no", {
+    expires: 7
+});
