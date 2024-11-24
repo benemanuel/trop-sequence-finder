@@ -929,7 +929,7 @@ var linkformat = function (t) {
         else if (split[0] == "Zechariah") sefer = "Zech";
         else if (split[0] == "Malachi") sefer = "Mal";
     }
-    return sefer + ":" + split[1];
+    return sefer + "." + split[1];
 };
 
 d3.select(window).on("resize", function() {
