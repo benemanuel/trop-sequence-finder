@@ -806,10 +806,9 @@ function graphclick(d) {
         return p.sefer == d.values.sefer && p.perek == d.values.perek && p.count == 0;
     });
 
+
     d3.select("#detailsModalLabel").html(locationformat(d.key));
-    d3.select("#currentSearch").html(ancestrynames.map(function(d) {
-        return tropnames.get(d).heb;
-    }).join(" "));
+    d3.select("#currentSearch").html(ancestrynames.map(function (d) { return tropnames.get(d).heb; }).join(" "));
     d3.select("#detailsContainer").html('<div class= "progress"><div class= "progress-bar progress-bar-striped active" role= "progressbar" style= "width: 100%"></div></div>');
     $("#detailsModal").modal("show");
 
