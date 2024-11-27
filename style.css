@@ -215,6 +215,10 @@ svg {
     margin-right: 18px;
 }
 
+.modal {
+    pointer-events: auto;
+}
+
 .details .pasuknum {
     font-size: 16px;
     /*font-weight: bold;*/

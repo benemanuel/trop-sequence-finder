@@ -1,12 +1,64 @@
 var dataFile = "tropstrings-torah.json";
 var tanakhparts = "torah";
 
-// Add this to make the modal draggable
-$(document).ready(function() {
-    $("#detailsModal .modal-dialog").draggable({
-        handle: ".modal-header"
-    });
-});
+
+// Add this function to enable modal dragging
+function enableModalDragging() {
+    const modal = document.querySelector('.modal-dialog');
+    const modalContent = document.querySelector('.modal-content');
+    
+    let isDragging = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    // Add event listeners to the modal header to initiate dragging
+    const modalHeader = document.querySelector('.modal-header');
+    if (modalHeader) {
+        modalHeader.style.cursor = 'move';
+        modalHeader.addEventListener('mousedown', dragStart);
+    }
+
+    document.addEventListener('mouseup', dragEnd);
+    document.addEventListener('mousemove', drag);
+
+    function dragStart(e) {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+
+        if (e.target === modalHeader) {
+            isDragging = true;
+        }
+    }
+
+    function dragEnd(e) {
+        initialX = currentX;
+        initialY = currentY;
+
+        isDragging = false;
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            setTranslate(currentX, currentY, modalContent);
+        }
+    }
+
+    function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    }
+}
+
 
 // https://stackoverflow.com/a/3855394
 var qs = (function(a) {
@@ -822,6 +874,10 @@ function graphclick(d) {
     d3.select("#detailsContainer").html('<div class= "progress"><div class= "progress-bar progress-bar-striped active" role= "progressbar" style= "width: 100%"></div></div>');
     $("#detailsModal").modal("show");
 
+// Call this function after modal is shown
+$(document).on('shown.bs.modal', '#detailsModal', function () {
+    enableModalDragging();
+});
 
     var textlist = [];
     // http://www.sefaria.org/api/texts/Exodus.16?lang=he&commentary=0&context=0
